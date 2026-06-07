@@ -5,6 +5,8 @@ import { Reveal, Stagger, StaggerItem } from "@/components/reveal";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { CTA } from "@/components/sections/cta";
+import { FaqSection } from "@/components/sections/faq-section";
+import { getProductFaqs } from "@/lib/faqs";
 import { productVisuals } from "@/components/product/product-visuals";
 import { type Product, getProduct } from "@/lib/products";
 import { type ProductPage, type ProductFeature } from "@/lib/product-pages";
@@ -43,6 +45,7 @@ export function ProductDetail({
     .filter((p): p is Product => Boolean(p));
   const visual = productVisuals[product.slug];
   const VisualComponent = visual?.Component;
+  const faqs = getProductFaqs(product.slug);
 
   return (
     <>
@@ -290,6 +293,14 @@ export function ProductDetail({
             </div>
           </Container>
         </Section>
+      ) : null}
+
+      {faqs.length ? (
+        <FaqSection
+          title={`${product.name} — common questions`}
+          description="Quick answers on how this capability fits your store and the wider platform."
+          faqs={faqs}
+        />
       ) : null}
 
       <CTA />

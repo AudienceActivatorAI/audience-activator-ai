@@ -4,7 +4,8 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { ProductDetail } from "@/components/product/product-detail";
 import { products, getProduct } from "@/lib/products";
 import { getProductPage } from "@/lib/product-pages";
-import { breadcrumbSchema, productSchema } from "@/lib/schema";
+import { getProductFaqs } from "@/lib/faqs";
+import { breadcrumbSchema, faqSchema, productSchema } from "@/lib/schema";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -47,20 +48,25 @@ export default async function ProductPageRoute({
 
   if (!product || !content) notFound();
 
+  const faqs = getProductFaqs(slug);
+  const graph = [
+    productSchema({
+      name: product.name,
+      slug: product.slug,
+      description: content.heroDescription,
+    }),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Products", path: "/products" },
+      { name: product.name, path: `/products/${product.slug}` },
+    ]),
+  ];
+  const faq = faqSchema(faqs);
+  if (faq) graph.push(faq);
+
   const schemaGraph = {
     "@context": "https://schema.org",
-    "@graph": [
-      productSchema({
-        name: product.name,
-        slug: product.slug,
-        description: content.heroDescription,
-      }),
-      breadcrumbSchema([
-        { name: "Home", path: "/" },
-        { name: "Products", path: "/products" },
-        { name: product.name, path: `/products/${product.slug}` },
-      ]),
-    ],
+    "@graph": graph,
   };
 
   return (

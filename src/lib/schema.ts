@@ -1,3 +1,4 @@
+import type { FaqItem } from "@/lib/faqs";
 import { products } from "@/lib/products";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, PARENT_ORG_NAME, PARENT_ORG_URL } from "@/lib/site";
 
@@ -80,6 +81,22 @@ export function productSchema(input: {
   };
 }
 
+export function faqSchema(faqs: FaqItem[]): JsonLd | null {
+  if (!faqs.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
 export function breadcrumbSchema(
   items: { name: string; path: string }[],
 ): JsonLd {
@@ -118,14 +135,17 @@ export function productsCollectionSchema(): JsonLd {
   };
 }
 
-export function homePageSchema(): JsonLd {
+export function homePageSchema(faqs: FaqItem[] = []): JsonLd {
+  const graph: JsonLd[] = [
+    organizationSchema(),
+    websiteSchema(),
+    softwareApplicationSchema(),
+  ];
+  const faq = faqSchema(faqs);
+  if (faq) graph.push(faq);
   return {
     "@context": "https://schema.org",
-    "@graph": [
-      organizationSchema(),
-      websiteSchema(),
-      softwareApplicationSchema(),
-    ],
+    "@graph": graph,
   };
 }
 
