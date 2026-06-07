@@ -35,7 +35,7 @@ export function SalesSheetHero() {
           <div className="max-w-3xl">
             <Eyebrow>Exclusive offer · Select independent dealers</Eyebrow>
             <h1 className="mt-6 text-[2.2rem] leading-[1.06] font-semibold tracking-tight text-navy sm:text-5xl lg:text-[3.1rem]">
-              BDC Copilot sales sheet —{" "}
+              Access Pricing —{" "}
               <span className="text-gradient-brand">June license offer.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate">

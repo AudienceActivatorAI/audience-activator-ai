@@ -13,13 +13,13 @@ import {
 import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Sales Sheet — Independent Dealer Offer",
+  title: "Access Pricing — Independent Dealer Offer",
   description:
     "Exclusive June offer for select independent dealers: $2,495 BDC Copilot license, $0 monthly platform fee, transparent lead economics, and Audience Activator AI data included.",
   alternates: { canonical: "/sales-sheet" },
   robots: { index: false, follow: false },
   openGraph: {
-    title: `Independent Dealer Sales Sheet · ${SITE_NAME}`,
+    title: `Access Pricing · ${SITE_NAME}`,
     description:
       "$2,495 June license · $4,995 normal · $0/mo platform fee · 60-day 2× trackable leads guarantee.",
   },

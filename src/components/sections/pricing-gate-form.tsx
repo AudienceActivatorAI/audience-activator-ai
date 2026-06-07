@@ -75,10 +75,10 @@ export function PricingGateForm({ onUnlocked }: Props) {
           <div className="mt-6 text-center">
             <Eyebrow className="justify-center">Exclusive independent dealer offer</Eyebrow>
             <h1 className="mt-5 text-3xl font-semibold tracking-tight text-navy sm:text-4xl">
-              Request access to pricing
+              Access Pricing
             </h1>
             <p className="mt-4 text-base leading-relaxed text-slate">
-              This sales sheet is available to select independent dealers. Share your
+              Exclusive pricing is available to select independent dealers. Share your
               store details to view the June license offer, lead economics, and covered
               launch stack.
             </p>
@@ -178,7 +178,7 @@ export function PricingGateForm({ onUnlocked }: Props) {
                 </>
               ) : (
                 <>
-                  View pricing
+                  Access Pricing
                   <ArrowRight />
                 </>
               )}
