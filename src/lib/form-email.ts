@@ -25,13 +25,24 @@ export type SendFormEmailResult =
 
 let cachedResend: Resend | null = null;
 
+const FROM_ADDRESS_PATTERN =
+  /^(?:[^<>\n]+ <[^<>\s]+@[^<>\s]+\.[^<>\s]+>|[^<>\s]+@[^<>\s]+\.[^<>\s]+)$/;
+
+export function normalizeFromAddress(value: string) {
+  const trimmed = value.trim().replace(/^['"]|['"]$/g, "");
+  return FROM_ADDRESS_PATTERN.test(trimmed) ? trimmed : null;
+}
+
 export function getFormEmailConfig(): FormEmailConfig | null {
   const apiKey = process.env.RESEND_API_KEY?.trim();
-  const from = (
-    process.env.FORMS_FROM_EMAIL ??
-    process.env.DEMO_FROM_EMAIL ??
-    process.env.RESEND_FROM_EMAIL
-  )?.trim();
+  const from = normalizeFromAddress(
+    (
+      process.env.FORMS_FROM_EMAIL ??
+      process.env.DEMO_FROM_EMAIL ??
+      process.env.RESEND_FROM_EMAIL ??
+      ""
+    ).trim(),
+  );
   const to = (
     process.env.FORMS_TO_EMAIL ??
     process.env.DEMO_TO_EMAIL
