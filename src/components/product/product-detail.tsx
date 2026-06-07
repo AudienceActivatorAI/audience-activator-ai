@@ -7,6 +7,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { CTA } from "@/components/sections/cta";
 import { FaqSection } from "@/components/sections/faq-section";
 import { getProductFaqs } from "@/lib/faqs";
+import { ProfileCard } from "@/components/product/profile-card";
+import { getProductProfileCard } from "@/components/product/product-profile-cards";
 import { productVisuals } from "@/components/product/product-visuals";
 import { type Product, getProduct } from "@/lib/products";
 import { type ProductPage, type ProductFeature } from "@/lib/product-pages";
@@ -45,6 +47,7 @@ export function ProductDetail({
     .filter((p): p is Product => Boolean(p));
   const visual = productVisuals[product.slug];
   const VisualComponent = visual?.Component;
+  const profileCard = getProductProfileCard(product.slug);
   const faqs = getProductFaqs(product.slug);
 
   return (
@@ -106,45 +109,32 @@ export function ProductDetail({
                   </Link>
                 </div>
               </Reveal>
-            </div>
-
-            {/* Spec panel */}
-            <Reveal delay={0.15} y={24}>
-              <div className="rounded-2xl border border-line bg-white p-6 shadow-float">
-                <div className="font-mono text-[0.62rem] tracking-[0.16em] text-slate uppercase">
-                  At a glance
-                </div>
-                {content.metrics?.length ? (
-                  <div className="mt-4 grid grid-cols-2 gap-4">
+              {content.metrics?.length ? (
+                <Reveal delay={0.24}>
+                  <div className="mt-10 flex flex-wrap gap-3 border-t border-line pt-6">
                     {content.metrics.map((m) => (
-                      <div key={m.label} className="rounded-xl border border-line bg-mist p-4">
-                        <div className="text-xl font-semibold tracking-tight text-navy">
+                      <div
+                        key={m.label}
+                        className="rounded-xl border border-line bg-mist px-4 py-3"
+                      >
+                        <div className="text-lg font-semibold tracking-tight text-navy">
                           {m.value}
                         </div>
-                        <div className="mt-1 text-xs leading-snug text-slate">
+                        <div className="mt-0.5 text-xs leading-snug text-slate">
                           {m.label}
                         </div>
                       </div>
                     ))}
                   </div>
-                ) : null}
-                <div className="mt-5">
-                  <div className="font-mono text-[0.62rem] tracking-[0.16em] text-slate uppercase">
-                    Works with
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {content.integrations.map((i) => (
-                      <span
-                        key={i}
-                        className="rounded-lg border border-line bg-white px-2.5 py-1.5 text-[0.78rem] font-medium text-navy/75"
-                      >
-                        {i}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+                </Reveal>
+              ) : null}
+            </div>
+
+            {profileCard ? (
+              <Reveal delay={0.15} y={24} className="flex justify-center lg:justify-end">
+                <ProfileCard data={profileCard} />
+              </Reveal>
+            ) : null}
           </div>
         </Container>
       </section>
