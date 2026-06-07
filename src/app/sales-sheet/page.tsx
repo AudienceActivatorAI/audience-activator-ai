@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CTA } from "@/components/sections/cta";
+import { SalesSheetGate } from "@/components/sections/sales-sheet-gate";
 import {
   SalesSheetCTA,
   SalesSheetCoveredStack,
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function SalesSheetPage() {
   return (
-    <>
+    <SalesSheetGate>
       <SalesSheetHero />
       <SalesSheetPricing />
       <SalesSheetLeadRules />
@@ -35,6 +36,6 @@ export default function SalesSheetPage() {
       <SalesSheetStackComparison />
       <SalesSheetCTA />
       <CTA />
-    </>
+    </SalesSheetGate>
   );
 }
