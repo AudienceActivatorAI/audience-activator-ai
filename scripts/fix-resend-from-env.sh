@@ -1,22 +1,30 @@
 #!/usr/bin/env bash
-# Repair corrupted FORMS_FROM_EMAIL / DEMO_FROM_EMAIL on Vercel.
-# Run from project root after fixing .env.local (or pass FORMS_FROM_EMAIL).
+# Repair Resend form env vars locally and on Vercel.
+#
+# Usage:
+#   pnpm run fix:resend-from-env
+#   RESEND_API_KEY=re_xxx pnpm run fix:resend-from-env
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_LOCAL="$ROOT_DIR/.env.local"
+LIB_DIR="$ROOT_DIR/scripts/lib"
 DEFAULT_FROM='Audience Activator AI <notifications@audienceactivator.ai>'
+DEFAULT_TO='james@tredfi.com'
 
-if [[ -f "$ENV_LOCAL" ]]; then
-  # shellcheck disable=SC1090
-  source <(grep -E '^(RESEND_API_KEY|FORMS_FROM_EMAIL|FORMS_TO_EMAIL)=' "$ENV_LOCAL" | sed 's/^/export /')
-fi
+# shellcheck source=scripts/lib/env-file.sh
+source "$LIB_DIR/env-file.sh"
+
+RESEND_API_KEY="${RESEND_API_KEY:-$(read_env_value "$ENV_LOCAL" RESEND_API_KEY || true)}"
+FORMS_FROM_EMAIL="${FORMS_FROM_EMAIL:-$(read_env_value "$ENV_LOCAL" FORMS_FROM_EMAIL || true)}"
+FORMS_TO_EMAIL="${FORMS_TO_EMAIL:-$(read_env_value "$ENV_LOCAL" FORMS_TO_EMAIL || true)}"
 
 FORMS_FROM_EMAIL="${FORMS_FROM_EMAIL:-$DEFAULT_FROM}"
-FORMS_TO_EMAIL="${FORMS_TO_EMAIL:-james@tredfi.com}"
+FORMS_TO_EMAIL="${FORMS_TO_EMAIL:-$DEFAULT_TO}"
 
-if [[ -z "${RESEND_API_KEY:-}" ]]; then
-  echo "RESEND_API_KEY missing. Set it in .env.local or export it first." >&2
+if [[ -z "${RESEND_API_KEY}" || ! "$RESEND_API_KEY" =~ ^re_ ]]; then
+  echo "RESEND_API_KEY missing. Add it to .env.local or run:" >&2
+  echo "  RESEND_API_KEY=re_xxx pnpm run fix:resend-from-env" >&2
   exit 1
 fi
 
@@ -37,21 +45,29 @@ EOF
 echo "Wrote $ENV_LOCAL"
 
 if ! command -v vercel >/dev/null 2>&1; then
-  echo "Install Vercel CLI, then re-run this script." >&2
+  echo "Vercel CLI not found. Install it, then re-run this script." >&2
   exit 1
 fi
 
+push_env() {
+  local name="$1"
+  local value="$2"
+  local env="$3"
+  vercel env rm "$name" "$env" --yes 2>/dev/null || true
+  printf '%s' "$value" | vercel env add "$name" "$env" >/dev/null
+}
+
 cd "$ROOT_DIR"
 for env in production preview development; do
-  for name in FORMS_FROM_EMAIL DEMO_FROM_EMAIL FORMS_TO_EMAIL DEMO_TO_EMAIL RESEND_API_KEY; do
-    value="${!name}"
-    vercel env rm "$name" "$env" --yes 2>/dev/null || true
-    printf '%s' "$value" | vercel env add "$name" "$env" >/dev/null
-  done
+  push_env RESEND_API_KEY "$RESEND_API_KEY" "$env"
+  push_env FORMS_FROM_EMAIL "$FORMS_FROM_EMAIL" "$env"
+  push_env FORMS_TO_EMAIL "$FORMS_TO_EMAIL" "$env"
+  push_env DEMO_FROM_EMAIL "$FORMS_FROM_EMAIL" "$env"
+  push_env DEMO_TO_EMAIL "$FORMS_TO_EMAIL" "$env"
   echo "Synced $env"
 done
 
 echo ""
-echo "Redeploy, then verify:"
+echo "Redeploy production, then verify:"
 echo "  vercel deploy --prod"
 echo "  curl https://www.audienceactivator.ai/api/forms/health"

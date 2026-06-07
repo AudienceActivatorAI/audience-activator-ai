@@ -18,16 +18,24 @@ export async function GET() {
   const fromDomain = getConfiguredFromDomain();
   const fromValid = Boolean(config?.from);
 
+  const rawFrom = (
+    process.env.FORMS_FROM_EMAIL ??
+    process.env.DEMO_FROM_EMAIL ??
+    process.env.RESEND_FROM_EMAIL ??
+    ""
+  ).trim();
+  const rawTo = (
+    process.env.FORMS_TO_EMAIL ??
+    process.env.DEMO_TO_EMAIL ??
+    ""
+  ).trim();
+
   return NextResponse.json({
     configured: Boolean(config),
-    fromSet: Boolean(
-      process.env.FORMS_FROM_EMAIL ??
-        process.env.DEMO_FROM_EMAIL ??
-        process.env.RESEND_FROM_EMAIL,
-    ),
+    fromSet: Boolean(rawFrom),
     fromValid,
     fromDomain,
-    toSet: Boolean(config?.to),
-    apiKeySet: Boolean(config?.apiKey),
+    toSet: Boolean(rawTo),
+    apiKeySet: Boolean(process.env.RESEND_API_KEY?.trim()),
   });
 }
