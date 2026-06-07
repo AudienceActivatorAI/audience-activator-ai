@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "sync:live-callback-env": "bash scripts/sync-live-callback-env-from-marketing.sh",
-    "setup:resend-forms": "bash scripts/setup-resend-forms.sh"
+    "setup:resend-forms": "bash scripts/setup-resend-forms.sh",
+    "fix:resend-from-env": "bash scripts/fix-resend-from-env.sh"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
