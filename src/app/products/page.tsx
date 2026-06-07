@@ -1,20 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Container, Section, SectionHeading } from "@/components/primitives";
 import { Stagger, StaggerItem } from "@/components/reveal";
 import { CTA } from "@/components/sections/cta";
 import { products, productLayers } from "@/lib/products";
+import { breadcrumbSchema } from "@/lib/schema";
+import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Products",
   description:
     "The Audience Activator AI product ecosystem — one software license for every capability, powered by your data, with optional Audience Activator intelligence data.",
+  alternates: { canonical: "/products" },
+  openGraph: {
+    title: `Products · ${SITE_NAME}`,
+    description:
+      "DealerOS, BDC Copilot, Super Pixel, Marketplace Copilot, Trade Copilot, and every connected capability — one software license.",
+  },
 };
 
 export default function ProductsIndex() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Products", path: "/products" },
+        ])}
+      />
       <section className="relative overflow-hidden bg-white pt-32 pb-12 sm:pt-36">
         <div className="bg-grid absolute inset-0 mask-fade-x" aria-hidden />
         <Container className="relative">

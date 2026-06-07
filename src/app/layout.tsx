@@ -3,6 +3,7 @@ import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
@@ -18,17 +19,19 @@ const mono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-const siteUrl = "https://audienceactivator.ai";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Audience Activator AI — Dealer Intelligence Infrastructure",
-    template: "%s · Audience Activator AI",
+    default: `${SITE_NAME} — Find and Convert In-Market Shoppers | ${SITE_TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Audience Activator AI connects shopper intelligence, AI automation, communications, marketplace activity, trade engagement, and dealership operations into one unified platform. Own the intelligence behind every deal.",
+  description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
+    "in-market shoppers",
+    "intent data",
     "Dealer Intelligence Infrastructure",
     "automotive AI platform",
     "shopper intelligence",
@@ -37,18 +40,23 @@ export const metadata: Metadata = {
     "Audience Activator",
   ],
   openGraph: {
-    title: "Audience Activator AI — Dealer Intelligence Infrastructure",
-    description:
-      "Own the intelligence behind every deal. One unified platform for shopper intelligence, AI automation, communications, marketplace, trade, and operations.",
-    url: siteUrl,
-    siteName: "Audience Activator AI",
+    title: `${SITE_NAME} — Find and Convert In-Market Shoppers`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Audience Activator AI — Dealer Intelligence Infrastructure",
+    title: `${SITE_NAME} — Find and Convert In-Market Shoppers`,
     description:
-      "Own the intelligence behind every deal. The intelligence layer for the modern dealership.",
+      "Own the intelligence behind every deal. Fresh intent data for the modern dealership.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
 };
 

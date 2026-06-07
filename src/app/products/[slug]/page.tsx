@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/seo/json-ld";
 import { ProductDetail } from "@/components/product/product-detail";
 import { products, getProduct } from "@/lib/products";
 import { getProductPage } from "@/lib/product-pages";
+import { breadcrumbSchema, productSchema } from "@/lib/schema";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -19,12 +22,16 @@ export async function generateMetadata({
   if (!product || !content) return { title: "Product not found" };
 
   const title = product.name;
+  const canonical = `/products/${slug}`;
   return {
     title,
     description: content.heroDescription,
+    alternates: { canonical },
     openGraph: {
-      title: `${title} · Audience Activator AI`,
+      title: `${title} · ${SITE_NAME}`,
       description: content.heroDescription,
+      url: `${SITE_URL}${canonical}`,
+      type: "website",
     },
   };
 }
@@ -40,5 +47,26 @@ export default async function ProductPageRoute({
 
   if (!product || !content) notFound();
 
-  return <ProductDetail product={product} content={content} />;
+  const schemaGraph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      productSchema({
+        name: product.name,
+        slug: product.slug,
+        description: content.heroDescription,
+      }),
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+        { name: product.name, path: `/products/${product.slug}` },
+      ]),
+    ],
+  };
+
+  return (
+    <>
+      <JsonLd data={schemaGraph} />
+      <ProductDetail product={product} content={content} />
+    </>
+  );
 }

@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/seo/json-ld";
+import { homePageSchema } from "@/lib/schema";
 import { Hero } from "@/components/sections/hero";
 import { Problem } from "@/components/sections/problem";
 import { Solution } from "@/components/sections/solution";
@@ -11,6 +13,7 @@ import { CTA } from "@/components/sections/cta";
 export default function Home() {
   return (
     <>
+      <JsonLd data={homePageSchema()} />
       <Hero />
       <Problem />
       <Solution />
