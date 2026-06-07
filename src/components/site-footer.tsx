@@ -33,7 +33,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     title: "Company",
     links: [
       { label: "TredFi — Parent Company", href: TREDFI_URL, external: true },
-      { label: "About", href: "#" },
+      { label: "About", href: "/about" },
       { label: "Contact", href: "/#cta" },
     ],
   },

@@ -161,3 +161,36 @@ export function productsPageSchema(): JsonLd {
     ],
   };
 }
+
+export function aboutPageSchema(): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${SITE_URL}/about#webpage`,
+        name: `About ${SITE_NAME}`,
+        url: `${SITE_URL}/about`,
+        description:
+          "Audience Activator AI is Dealer Intelligence Infrastructure built by TredFi in Seattle.",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: { "@id": `${SITE_URL}/#organization` },
+        mainEntity: {
+          "@type": "Person",
+          name: "James Hamilton",
+          jobTitle: "Managing Partner",
+          worksFor: {
+            "@type": "Organization",
+            name: PARENT_ORG_NAME,
+            url: PARENT_ORG_URL,
+          },
+          sameAs: "https://www.linkedin.com/in/tredfi/",
+        },
+      },
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "About", path: "/about" },
+      ]),
+    ],
+  };
+}
