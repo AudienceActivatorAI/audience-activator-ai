@@ -1,7 +1,3 @@
-export const LIVE_CALLBACK_ASSET_BASE =
-  process.env.NEXT_PUBLIC_LIVE_CALLBACK_ASSET_BASE ??
-  "https://salesassistant.tredfi.com";
-
 export type SalesDemoProfileId =
   | "inbound_qualifier"
   | "outbound_reactivation"
@@ -9,14 +5,23 @@ export type SalesDemoProfileId =
   | "trade_in"
   | "finance_handoff";
 
-export type AiEmployeeId = "maya" | "avery" | "eric";
+export type DealerLeadInput = {
+  contactName: string;
+  dealershipName: string;
+  dealerEmail: string;
+  phoneNumber: string;
+  problemToSolve?: string;
+  interestContext?: string;
+};
 
-export type SalesProblemOptionId =
-  | "fresh_internet_lead"
-  | "missed_appointment"
-  | "aged_lead_follow_up"
-  | "trade_in_question"
-  | "finance_handoff";
+export type DealerLead = {
+  contactName: string;
+  dealershipName: string;
+  dealerEmail: string;
+  phoneNumber: string;
+  problemToSolve: string | null;
+  interestContext: string | null;
+};
 
 export type CallbackAttribution = {
   source?: string;
@@ -28,20 +33,86 @@ export type CallbackAttribution = {
   referrer?: string;
 };
 
-export type AiEmployeeProfile = {
-  id: AiEmployeeId;
-  name: string;
-  role: string;
-  outcome: string;
+export type SalesDemoProfile = {
+  id: SalesDemoProfileId;
+  label: string;
   summary: string;
-  profileId: SalesDemoProfileId;
+  outcome: string;
+  defaultFirstName: string;
+  callerName: string;
   defaultProblemToSolve: string;
   defaultInterestContext: string;
-  portraitSrc: string;
-  motionSrc: string;
-  readoutTitle: string;
-  readoutLines: string[];
 };
+
+export const defaultCallbackProblemToSolve = "Speed-to-lead on fresh internet leads";
+export const defaultCallbackInterestContext = "2024 Ford F-150 Lariat lead";
+
+export const salesDemoProfiles: SalesDemoProfile[] = [
+  {
+    id: "inbound_qualifier",
+    label: "Inbound Sales Qualifier",
+    summary:
+      "Answers fresh leads fast, confirms intent, and routes the right buyer to the right person.",
+    outcome: "Speed-to-lead and clean handoff",
+    defaultFirstName: "Joyce",
+    callerName: "Maya",
+    defaultProblemToSolve: defaultCallbackProblemToSolve,
+    defaultInterestContext: defaultCallbackInterestContext,
+  },
+  {
+    id: "outbound_reactivation",
+    label: "Outbound Reactivation",
+    summary:
+      "Revives aged leads, missed opportunities, and unsold showroom traffic with useful context.",
+    outcome: "More conversations from stale leads",
+    defaultFirstName: "Marcus",
+    callerName: "Maya",
+    defaultProblemToSolve: "Outbound reactivation for aged sales leads and missed opportunities",
+    defaultInterestContext: "Aged lead who previously asked about availability and pricing",
+  },
+  {
+    id: "appointment_rescue",
+    label: "Appointment Rescue",
+    summary: "Recovers no-shows and soft appointments with a direct but helpful follow-up path.",
+    outcome: "Fewer lost appointments",
+    defaultFirstName: "Alicia",
+    callerName: "Avery",
+    defaultProblemToSolve: "Appointment confirmation, no-show recovery, and schedule follow-up",
+    defaultInterestContext:
+      "Customer missed or softened an appointment and needs a helpful next step",
+  },
+  {
+    id: "trade_in",
+    label: "Trade-In Specialist",
+    summary: "Qualifies trade intent, payoff questions, equity concerns, and appraisal next steps.",
+    outcome: "Better trade conversations",
+    defaultFirstName: "Danielle",
+    callerName: "Eric",
+    defaultProblemToSolve: "Trade-in questions, payoff context, and appraisal next steps",
+    defaultInterestContext: "Buyer wants to understand trade value and next appraisal steps",
+  },
+  {
+    id: "finance_handoff",
+    label: "Finance Handoff",
+    summary:
+      "Handles credit-sensitive buyer questions while keeping expectations realistic and compliant.",
+    outcome: "Cleaner finance handoff",
+    defaultFirstName: "Jordan",
+    callerName: "Eric",
+    defaultProblemToSolve: "Finance-sensitive questions, trade context, and clean handoff",
+    defaultInterestContext:
+      "Buyer has payment, credit, trade, or approval questions before the next handoff",
+  },
+];
+
+export type AiEmployeeId = "maya" | "avery" | "eric";
+
+export type SalesProblemOptionId =
+  | "fresh_internet_lead"
+  | "missed_appointment"
+  | "aged_lead_follow_up"
+  | "trade_in_question"
+  | "finance_handoff";
 
 export type SalesProblemOption = {
   id: SalesProblemOptionId;
@@ -54,22 +125,37 @@ export type SalesProblemOption = {
   interestContext: string;
 };
 
-const asset = (path: string) => `${LIVE_CALLBACK_ASSET_BASE}${path}`;
+export type AiEmployeeProfile = {
+  id: AiEmployeeId;
+  name: string;
+  role: string;
+  shortRole: string;
+  profileId: SalesDemoProfileId;
+  outcome: string;
+  summary: string;
+  defaultProblemToSolve: string;
+  defaultInterestContext: string;
+  portraitSrc: string;
+  motionSrc: string;
+  readoutTitle: string;
+  readoutLines: string[];
+};
 
 export const aiEmployeeProfiles: AiEmployeeProfile[] = [
   {
     id: "maya",
     name: "Maya",
     role: "AI Sales Agent",
+    shortRole: "Sales",
+    profileId: "inbound_qualifier",
     outcome: "Fresh leads and sales follow-up",
     summary:
       "Handles fresh sales leads, reactivation, trade-cycle outreach, and the first appointment ask.",
-    profileId: "inbound_qualifier",
     defaultProblemToSolve: "Speed-to-lead and sales follow-up on fresh or aging leads",
     defaultInterestContext:
       "New sales lead requesting pricing, availability, and next appointment steps",
-    portraitSrc: asset("/ai-employees/maya.png"),
-    motionSrc: asset("/ai-employees/videos/maya.mp4"),
+    portraitSrc: "/ai-employees/maya.png",
+    motionSrc: "/ai-employees/videos/maya.mp4",
     readoutTitle: "Sales lead opening",
     readoutLines: [
       "Hi, this is Maya with the sales team. I saw your interest come through and wanted to help right away.",
@@ -81,15 +167,16 @@ export const aiEmployeeProfiles: AiEmployeeProfile[] = [
     id: "avery",
     name: "Avery",
     role: "AI Appointment Agent",
+    shortRole: "Scheduler",
+    profileId: "appointment_rescue",
     outcome: "Appointment confirmation and rescue",
     summary:
       "Rescues no-shows, confirms appointment intent, and keeps the schedule moving.",
-    profileId: "appointment_rescue",
     defaultProblemToSolve: "Appointment confirmation, no-show recovery, and schedule follow-up",
     defaultInterestContext:
       "Customer missed or softened an appointment and needs a helpful next step",
-    portraitSrc: asset("/ai-employees/avery.png"),
-    motionSrc: asset("/ai-employees/videos/avery.mp4"),
+    portraitSrc: "/ai-employees/avery.png",
+    motionSrc: "/ai-employees/videos/avery.mp4",
     readoutTitle: "Appointment rescue",
     readoutLines: [
       "Hi, this is Avery with the appointment team. I wanted to make it easy to keep your visit on track.",
@@ -101,15 +188,16 @@ export const aiEmployeeProfiles: AiEmployeeProfile[] = [
     id: "eric",
     name: "Eric",
     role: "AI Finance Handoff",
+    shortRole: "Handoff",
+    profileId: "finance_handoff",
     outcome: "Finance-sensitive handoff",
     summary:
       "Handles finance-sensitive questions, trade-in context, and clean next-step routing.",
-    profileId: "finance_handoff",
     defaultProblemToSolve: "Finance-sensitive questions, trade context, and clean handoff",
     defaultInterestContext:
       "Buyer has payment, credit, trade, or approval questions before the next handoff",
-    portraitSrc: asset("/ai-employees/eric.png"),
-    motionSrc: asset("/ai-employees/videos/eric.mp4"),
+    portraitSrc: "/ai-employees/eric.png",
+    motionSrc: "/ai-employees/videos/eric.mp4",
     readoutTitle: "Finance handoff",
     readoutLines: [
       "Hi, this is Eric. I can help gather the finance and trade context before a manager steps in.",
@@ -148,7 +236,8 @@ export const salesProblemOptions: SalesProblemOption[] = [
     profileId: "outbound_reactivation",
     employeeId: "maya",
     outcome: "Restart stale conversations",
-    summary: "Use for old internet leads, unsold showroom traffic, and missed opportunities.",
+    summary:
+      "Use for old internet leads, unsold showroom traffic, and missed opportunities.",
     problemToSolve: "Outbound reactivation for aged sales leads and missed opportunities",
     interestContext: "Aged lead who previously asked about availability and pricing",
   },
@@ -158,7 +247,8 @@ export const salesProblemOptions: SalesProblemOption[] = [
     profileId: "trade_in",
     employeeId: "eric",
     outcome: "Gather trade context before handoff",
-    summary: "Use when payoff, equity, appraisal, or trade value is driving the conversation.",
+    summary:
+      "Use when payoff, equity, appraisal, or trade value is driving the conversation.",
     problemToSolve: "Trade-in questions, payoff context, and appraisal next steps",
     interestContext: "Buyer wants to understand trade value and next appraisal steps",
   },
@@ -184,13 +274,29 @@ export function normalizePhone(value: string): string {
   return trimmed;
 }
 
-export function applyAiEmployeeDefaults(employeeId: AiEmployeeId) {
-  const employee = aiEmployeeProfiles.find((e) => e.id === employeeId);
+export function isE164(phone: string): boolean {
+  return /^\+[1-9]\d{7,14}$/.test(phone);
+}
+
+export function resolveSalesDemoProfile(value: string): SalesDemoProfile | null {
+  return salesDemoProfiles.find((profile) => profile.id === value) ?? null;
+}
+
+export function resolveAiEmployeeProfile(value: string): AiEmployeeProfile | null {
+  return aiEmployeeProfiles.find((employee) => employee.id === value) ?? null;
+}
+
+export function resolveSalesProblemOption(value: string): SalesProblemOption | null {
+  return salesProblemOptions.find((option) => option.id === value) ?? null;
+}
+
+export function applyAiEmployeeDefaults(value: AiEmployeeId) {
+  const employee = resolveAiEmployeeProfile(value);
   if (!employee) {
     return {
       profileId: "inbound_qualifier" as SalesDemoProfileId,
-      problemToSolve: "Speed-to-lead on fresh internet leads",
-      interestContext: "2024 Ford F-150 Lariat lead",
+      problemToSolve: defaultCallbackProblemToSolve,
+      interestContext: defaultCallbackInterestContext,
     };
   }
   return {
@@ -200,14 +306,14 @@ export function applyAiEmployeeDefaults(employeeId: AiEmployeeId) {
   };
 }
 
-export function applySalesProblemDefaults(problemId: SalesProblemOptionId) {
-  const option = salesProblemOptions.find((o) => o.id === problemId);
+export function applySalesProblemDefaults(value: SalesProblemOptionId) {
+  const option = resolveSalesProblemOption(value);
   if (!option) {
     return {
       employeeId: "maya" as AiEmployeeId,
       profileId: "inbound_qualifier" as SalesDemoProfileId,
-      problemToSolve: "Speed-to-lead on fresh internet leads",
-      interestContext: "2024 Ford F-150 Lariat lead",
+      problemToSolve: defaultCallbackProblemToSolve,
+      interestContext: defaultCallbackInterestContext,
     };
   }
   return {
@@ -215,5 +321,104 @@ export function applySalesProblemDefaults(problemId: SalesProblemOptionId) {
     profileId: option.profileId,
     problemToSolve: option.problemToSolve,
     interestContext: option.interestContext,
+  };
+}
+
+function sanitizeText(value: string, maxLength: number): string {
+  return value.trim().replace(/\s+/g, " ").slice(0, maxLength);
+}
+
+function isValidName(value: string): boolean {
+  return /^[A-Za-z][A-Za-z0-9&.,' -]{1,79}$/.test(value);
+}
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value) && value.length <= 120;
+}
+
+export function buildDealerLead(
+  input: Partial<DealerLeadInput>,
+): { lead: DealerLead } | { error: string } {
+  const contactName = sanitizeText(input.contactName ?? "", 80);
+  const dealershipName = sanitizeText(input.dealershipName ?? "", 100);
+  const dealerEmail = sanitizeText(input.dealerEmail ?? "", 120).toLowerCase();
+  const phoneNumber = normalizePhone(input.phoneNumber ?? "");
+  const problemToSolve = sanitizeText(input.problemToSolve ?? "", 180);
+  const interestContext = sanitizeText(input.interestContext ?? "", 220);
+
+  if (!isValidName(contactName)) {
+    return { error: "Enter your name so we know who requested the callback." };
+  }
+  if (dealershipName.length < 2) {
+    return { error: "Enter the dealership name before requesting the callback." };
+  }
+  if (!isValidEmail(dealerEmail)) {
+    return { error: "Enter a valid dealer email before requesting the callback." };
+  }
+  if (!isE164(phoneNumber)) {
+    return { error: "Enter a valid phone number, including area code." };
+  }
+
+  return {
+    lead: {
+      contactName,
+      dealershipName,
+      dealerEmail,
+      phoneNumber,
+      problemToSolve: problemToSolve || null,
+      interestContext: interestContext || null,
+    },
+  };
+}
+
+export function buildDealerDemoOpeningLine(input: {
+  firstName: string;
+  callerName: string;
+}): string {
+  return `Hi ${input.firstName}, this is ${input.callerName} with BDC Copilot. Thanks for requesting the live AI demo. Is now still a good time?`;
+}
+
+export function buildDealerDemoFollowUpContext(input: {
+  profileLabel: string;
+  dealershipName: string;
+  interestContext: string | null;
+  problemToSolve: string | null;
+}): string {
+  const contextParts = [
+    `After the dealer says it is a good time, explain that you will show how the ${input.profileLabel} handles a live dealership sales conversation for ${input.dealershipName}.`,
+  ];
+  if (input.interestContext) {
+    contextParts.push(
+      `Use this context in the second turn, not the opening line: ${input.interestContext}.`,
+    );
+  }
+  if (input.problemToSolve) {
+    contextParts.push(
+      `Use this dealer concern after permission is confirmed: ${input.problemToSolve}.`,
+    );
+  }
+  contextParts.push(
+    "Keep the first 20 seconds calm and conversational. One idea per sentence. Do not list every captured field out loud.",
+  );
+  return contextParts.join(" ");
+}
+
+function readAttributionString(value: unknown, maxLength: number): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const sanitized = sanitizeText(value, maxLength);
+  return sanitized || undefined;
+}
+
+export function buildCallbackAttribution(value: unknown): CallbackAttribution {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const input = value as Record<string, unknown>;
+  return {
+    source: readAttributionString(input.source, 80),
+    medium: readAttributionString(input.medium, 80),
+    campaign: readAttributionString(input.campaign, 120),
+    content: readAttributionString(input.content, 120),
+    term: readAttributionString(input.term, 120),
+    landingPath: readAttributionString(input.landingPath, 220),
+    referrer: readAttributionString(input.referrer, 300),
   };
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { Phone, Sparkles } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -54,13 +53,12 @@ export function AiEmployeeRoster({
               )}
             >
               <div className="relative aspect-[9/16] overflow-hidden bg-navy-950">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={employee.portraitSrc}
                   alt={employee.name}
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  unoptimized
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
                 />
                 <div className="absolute left-4 top-4 rounded-lg border border-white/15 bg-navy-950/85 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                   {isSelected ? "Selected" : "Choose"}
