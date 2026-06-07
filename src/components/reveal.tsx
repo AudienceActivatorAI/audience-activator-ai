@@ -16,7 +16,7 @@ type RevealProps = {
   delay?: number;
   y?: number;
   as?: "div" | "li" | "span";
-  /** Skip scroll animation — use for above-the-fold hero content */
+  /** Above-the-fold content — render visible immediately, no scroll animation */
   eager?: boolean;
 };
 
@@ -34,6 +34,7 @@ export function Reveal({
   eager = false,
 }: RevealProps) {
   const reduce = useReducedMotion();
+  const skipMotion = reduce || eager;
   const ref = React.useRef<HTMLDivElement | HTMLLIElement | HTMLSpanElement | null>(
     null,
   );
@@ -45,7 +46,7 @@ export function Reveal({
   });
 
   const variants: Variants = {
-    hidden: { opacity: 0, y: reduce ? 0 : y },
+    hidden: { opacity: 0, y },
     show: {
       opacity: 1,
       y: 0,
@@ -53,19 +54,23 @@ export function Reveal({
     },
   };
 
-  React.useEffect(() => {
-    if (reduce || eager) {
+  React.useLayoutEffect(() => {
+    if (skipMotion) return;
+
+    if (inView) {
       void controls.start("show");
       return;
     }
-    if (inView) {
+
+    const node = ref.current;
+    if (node && isAboveFold(node)) {
       void controls.start("show");
     }
-  }, [controls, eager, inView, reduce]);
+  }, [controls, inView, skipMotion]);
 
-  // Mobile Safari often skips the first whileInView pass for above-the-fold nodes.
   React.useEffect(() => {
-    if (reduce || eager) return;
+    if (skipMotion) return;
+
     const node = ref.current;
     if (!node) return;
 
@@ -77,9 +82,9 @@ export function Reveal({
     requestAnimationFrame(revealIfVisible);
     window.addEventListener("resize", revealIfVisible, { passive: true });
     return () => window.removeEventListener("resize", revealIfVisible);
-  }, [controls, eager, reduce]);
+  }, [controls, skipMotion]);
 
-  if (reduce) {
+  if (skipMotion) {
     const Tag = as;
     return <Tag className={cn(className)}>{children}</Tag>;
   }
@@ -123,6 +128,7 @@ type StaggerProps = {
 
 export function Stagger({ children, className, gap = 0.08, eager = false }: StaggerProps) {
   const reduce = useReducedMotion();
+  const skipMotion = reduce || eager;
   const ref = React.useRef<HTMLDivElement | null>(null);
   const controls = useAnimation();
   const inView = useInView(ref, {
@@ -131,26 +137,35 @@ export function Stagger({ children, className, gap = 0.08, eager = false }: Stag
     margin: "0px 0px -40px 0px",
   });
 
-  React.useEffect(() => {
-    if (reduce || eager) {
+  React.useLayoutEffect(() => {
+    if (skipMotion) return;
+
+    if (inView) {
       void controls.start("show");
       return;
     }
-    if (inView) void controls.start("show");
-  }, [controls, eager, inView, reduce]);
+
+    const node = ref.current;
+    if (node && isAboveFold(node)) {
+      void controls.start("show");
+    }
+  }, [controls, inView, skipMotion]);
 
   React.useEffect(() => {
-    if (reduce || eager) return;
+    if (skipMotion) return;
+
     const node = ref.current;
     if (!node) return;
+
     const revealIfVisible = () => {
       if (isAboveFold(node)) void controls.start("show");
     };
+
     revealIfVisible();
     requestAnimationFrame(revealIfVisible);
-  }, [controls, eager, reduce]);
+  }, [controls, skipMotion]);
 
-  if (reduce) {
+  if (skipMotion) {
     return <div className={cn(className)}>{children}</div>;
   }
 
