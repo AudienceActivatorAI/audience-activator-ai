@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 56" role="img" aria-label="Audience Activator AI">
+  <text
+    x="0"
+    y="38"
+    font-family="'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif"
+    font-size="28"
+    font-weight="600"
+    letter-spacing="0.14em"
+  >
+    <tspan fill="#0A2540">AUDIENCE</tspan>
+    <tspan fill="#1F6FFF" dx="0.28em">ACTIVATOR</tspan>
+    <tspan
+      fill="#6B7280"
+      font-size="17.36"
+      font-weight="500"
+      letter-spacing="0.18em"
+      baseline-shift="super"
+      dx="0.22em"
+    >
+      AI
+    </tspan>
+  </text>
+</svg>

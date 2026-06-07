@@ -67,10 +67,10 @@ export function SalesSheetHero() {
           <Reveal delay={0.06}>
             <div className="w-full max-w-sm rounded-2xl border border-line bg-mist p-6 shadow-sm lg:max-w-xs">
               <Image
-                src="/brand/AudienceActivator_Horizontal_800w.png"
-                alt="Audience Activator AI"
-                width={800}
-                height={200}
+                src="/brand/audience-activator-lockup.svg"
+                alt="Audience Activator AI — Dealer Intelligence Infrastructure"
+                width={520}
+                height={88}
                 className="h-auto w-full"
                 priority
               />
