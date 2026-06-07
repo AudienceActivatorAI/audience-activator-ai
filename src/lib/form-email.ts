@@ -73,6 +73,39 @@ function buildTableText(fields: FormEmailField[]) {
   return fields.map((field) => `${field.label}: ${field.value}`).join("\n");
 }
 
+/** Resend tags only allow ASCII letters, numbers, underscores, and dashes. */
+export function sanitizeResendTag(value: string, max = 256) {
+  return value.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, max);
+}
+
+function sanitizeTags(tags: Array<{ name: string; value: string }>) {
+  return tags
+    .map((tag) => ({
+      name: sanitizeResendTag(tag.name, 256),
+      value: sanitizeResendTag(tag.value, 256),
+    }))
+    .filter((tag) => tag.name.length > 0 && tag.value.length > 0);
+}
+
+function formatResendError(error: unknown) {
+  if (!error || typeof error !== "object") {
+    return String(error);
+  }
+
+  const record = error as Record<string, unknown>;
+  const message =
+    typeof record.message === "string"
+      ? record.message
+      : typeof record.name === "string"
+        ? record.name
+        : "Unknown Resend error";
+
+  const statusCode =
+    typeof record.statusCode === "number" ? ` (${record.statusCode})` : "";
+
+  return `${message}${statusCode}`;
+}
+
 export async function sendFormEmail(
   input: SendFormEmailInput,
 ): Promise<SendFormEmailResult> {
@@ -104,6 +137,7 @@ export async function sendFormEmail(
   const text = `${input.heading}\n\n${buildTableText(rows)}`;
 
   const resend = getResendClient(config.apiKey);
+  const tags = input.tags ? sanitizeTags(input.tags) : undefined;
   const { data, error } = await resend.emails.send({
     from: config.from,
     to: [config.to],
@@ -111,11 +145,11 @@ export async function sendFormEmail(
     html,
     text,
     ...(input.replyTo ? { replyTo: input.replyTo } : {}),
-    ...(input.tags ? { tags: input.tags } : {}),
+    ...(tags && tags.length > 0 ? { tags } : {}),
   });
 
   if (error) {
-    console.error("Resend error:", error);
+    console.error("Resend error:", formatResendError(error), error);
     return {
       ok: false,
       error: "Unable to send your request. Please try again shortly.",
