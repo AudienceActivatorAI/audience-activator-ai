@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "sync:live-callback-env": "bash scripts/sync-live-callback-env-from-marketing.sh"
+    "sync:live-callback-env": "bash scripts/sync-live-callback-env-from-marketing.sh",
+    "setup:resend-forms": "bash scripts/setup-resend-forms.sh"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

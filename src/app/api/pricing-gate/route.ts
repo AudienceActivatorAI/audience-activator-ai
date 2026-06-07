@@ -1,5 +1,5 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { sendFormEmail } from "@/lib/form-email";
 
 type PricingGatePayload = {
   name?: string;
@@ -19,17 +19,6 @@ function clean(value: unknown, max = 500) {
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.DEMO_FROM_EMAIL;
-  const to = process.env.DEMO_TO_EMAIL;
-
-  if (!apiKey || !from || !to) {
-    return NextResponse.json(
-      { error: "Pricing access is not configured on the server." },
-      { status: 503 },
-    );
-  }
-
   let body: PricingGatePayload;
   try {
     body = (await request.json()) as PricingGatePayload;
@@ -54,45 +43,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please provide a valid email." }, { status: 400 });
   }
 
-  const resend = new Resend(apiKey);
-
-  const lines: [string, string][] = [
-    ["Dealership", dealership],
-    ["Name", name],
-    ["Email", email],
-    ["Phone", phone],
-    ["Role", role],
-  ];
-
-  const html = `
-    <h2>Pricing page access — Independent dealer offer</h2>
-    <table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px;">
-      ${lines
-        .map(
-          ([label, value]) =>
-            `<tr><td style="color:#6b7280;vertical-align:top;"><strong>${label}</strong></td><td>${value.replace(/\n/g, "<br>")}</td></tr>`,
-        )
-        .join("")}
-    </table>
-  `;
-
-  const text = lines.map(([label, value]) => `${label}: ${value}`).join("\n");
-
-  const { error } = await resend.emails.send({
-    from,
-    to: [to],
+  const result = await sendFormEmail({
+    subject: `Access Pricing — ${dealership}`,
+    heading: "Access Pricing request — Independent dealer offer",
     replyTo: email,
-    subject: `Pricing access — ${dealership}`,
-    html,
-    text,
+    tags: [
+      { name: "form", value: "access-pricing" },
+      { name: "dealership", value: dealership.slice(0, 80) },
+    ],
+    fields: [
+      { label: "Dealership", value: dealership },
+      { label: "Name", value: name },
+      { label: "Email", value: email },
+      { label: "Phone", value: phone },
+      { label: "Role", value: role },
+    ],
   });
 
-  if (error) {
-    console.error("Resend error:", error);
-    return NextResponse.json(
-      { error: "Unable to submit your request. Please try again shortly." },
-      { status: 502 },
-    );
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
   const response = NextResponse.json({ ok: true });

@@ -1,5 +1,5 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { sendFormEmail } from "@/lib/form-email";
 
 type DemoPayload = {
   dealership?: string;
@@ -20,17 +20,6 @@ function clean(value: unknown, max = 500) {
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.DEMO_FROM_EMAIL;
-  const to = process.env.DEMO_TO_EMAIL;
-
-  if (!apiKey || !from || !to) {
-    return NextResponse.json(
-      { error: "Demo email is not configured on the server." },
-      { status: 503 },
-    );
-  }
-
   let body: DemoPayload;
   try {
     body = (await request.json()) as DemoPayload;
@@ -56,46 +45,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please provide a valid email." }, { status: 400 });
   }
 
-  const resend = new Resend(apiKey);
-
-  const lines = [
-    ["Dealership", dealership],
-    ["Contact", name],
-    ["Email", email],
-    phone ? ["Phone", phone] : null,
-    productInterest ? ["Product interest", productInterest] : null,
-    message ? ["Message", message] : null,
-  ].filter(Boolean) as [string, string][];
-
-  const html = `
-    <h2>New demo request — Audience Activator AI</h2>
-    <table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px;">
-      ${lines
-        .map(
-          ([label, value]) =>
-            `<tr><td style="color:#6b7280;vertical-align:top;"><strong>${label}</strong></td><td>${value.replace(/\n/g, "<br>")}</td></tr>`,
-        )
-        .join("")}
-    </table>
-  `;
-
-  const text = lines.map(([label, value]) => `${label}: ${value}`).join("\n");
-
-  const { error } = await resend.emails.send({
-    from,
-    to: [to],
-    replyTo: email,
+  const result = await sendFormEmail({
     subject: `Demo request — ${dealership}`,
-    html,
-    text,
+    heading: "New demo request — Audience Activator AI",
+    replyTo: email,
+    tags: [
+      { name: "form", value: "demo" },
+      { name: "dealership", value: dealership.slice(0, 80) },
+    ],
+    fields: [
+      { label: "Dealership", value: dealership },
+      { label: "Contact", value: name },
+      { label: "Email", value: email },
+      ...(phone ? [{ label: "Phone", value: phone }] : []),
+      ...(productInterest ? [{ label: "Product interest", value: productInterest }] : []),
+      ...(message ? [{ label: "Message", value: message }] : []),
+    ],
   });
 
-  if (error) {
-    console.error("Resend error:", error);
-    return NextResponse.json(
-      { error: "Unable to send your request. Please try again shortly." },
-      { status: 502 },
-    );
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
   return NextResponse.json({ ok: true });
