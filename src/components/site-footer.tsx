@@ -34,6 +34,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "TredFi — Parent Company", href: TREDFI_URL, external: true },
       { label: "About", href: "/about" },
+      { label: "Dealer Sales Sheet", href: "/sales-sheet" },
       { label: "Contact", href: "/#cta" },
     ],
   },

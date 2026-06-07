@@ -14,5 +14,5 @@ export const legacyRedirects: Redirect[] = [
   { source: "/blog/:slug*", destination: "/", permanent: true },
   { source: "/contact", destination: "/", permanent: true },
   { source: "/demo", destination: "/", permanent: true },
-  { source: "/pricing", destination: "/", permanent: true },
+  { source: "/pricing", destination: "/sales-sheet", permanent: true },
 ];
