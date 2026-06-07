@@ -6,7 +6,7 @@ import { Container, Section, SectionHeading } from "@/components/primitives";
 import { Stagger, StaggerItem } from "@/components/reveal";
 import { CTA } from "@/components/sections/cta";
 import { products, productLayers } from "@/lib/products";
-import { breadcrumbSchema } from "@/lib/schema";
+import { productsPageSchema } from "@/lib/schema";
 import { SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -24,12 +24,7 @@ export const metadata: Metadata = {
 export default function ProductsIndex() {
   return (
     <>
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Products", path: "/products" },
-        ])}
-      />
+      <JsonLd data={productsPageSchema()} />
       <section className="relative overflow-hidden bg-white pt-32 pb-12 sm:pt-36">
         <div className="bg-grid absolute inset-0 mask-fade-x" aria-hidden />
         <Container className="relative">

@@ -47,13 +47,6 @@ export function softwareApplicationSchema(): JsonLd {
     operatingSystem: "Web",
     url: SITE_URL,
     description: SITE_DESCRIPTION,
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-      description: "Contact for dealer software license pricing",
-      url: `${SITE_URL}/#cta`,
-    },
     provider: { "@id": `${SITE_URL}/#organization` },
     featureList: [
       "Shopper identity resolution",
@@ -102,6 +95,29 @@ export function breadcrumbSchema(
   };
 }
 
+export function productsCollectionSchema(): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}/products#webpage`,
+    name: `${SITE_NAME} Products`,
+    url: `${SITE_URL}/products`,
+    description:
+      "Dealer intelligence products — DealerOS, BDC Copilot, Super Pixel, Marketplace Copilot, Trade Copilot, and more. One software license for the full platform.",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#software` },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: product.name,
+        url: `${SITE_URL}/products/${product.slug}`,
+      })),
+    },
+  };
+}
+
 export function homePageSchema(): JsonLd {
   return {
     "@context": "https://schema.org",
@@ -109,6 +125,19 @@ export function homePageSchema(): JsonLd {
       organizationSchema(),
       websiteSchema(),
       softwareApplicationSchema(),
+    ],
+  };
+}
+
+export function productsPageSchema(): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      productsCollectionSchema(),
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Products", path: "/products" },
+      ]),
     ],
   };
 }
