@@ -30,11 +30,11 @@ export function Hero() {
       <Container className="relative">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="flex flex-col items-start">
-            <Reveal>
+            <Reveal eager>
               <Eyebrow>Dealer Intelligence Infrastructure™</Eyebrow>
             </Reveal>
 
-            <Reveal delay={0.05}>
+            <Reveal eager delay={0.05}>
               <h1 className="mt-6 text-[2.6rem] leading-[1.04] font-semibold tracking-tight text-navy sm:text-5xl lg:text-6xl">
                 Own the Intelligence
                 <br />
@@ -43,7 +43,7 @@ export function Hero() {
               </h1>
             </Reveal>
 
-            <Reveal delay={0.12}>
+            <Reveal eager delay={0.12}>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
                 Audience Activator AI connects shopper intelligence, AI
                 automation, communications, marketplace activity, trade
@@ -52,7 +52,7 @@ export function Hero() {
               </p>
             </Reveal>
 
-            <Reveal delay={0.18}>
+            <Reveal eager delay={0.18}>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link href="#cta" className={cn(buttonVariants({ size: "lg" }))}>
                   Request Demo
@@ -69,7 +69,7 @@ export function Hero() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.24}>
+            <Reveal eager delay={0.24}>
               <div className="mt-12 w-full border-t border-line pt-6">
                 <p className="eyebrow text-slate">The intelligence layer for</p>
                 <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
@@ -86,7 +86,7 @@ export function Hero() {
             </Reveal>
           </div>
 
-          <Reveal delay={0.15} y={28} className="flex justify-center lg:justify-end">
+          <Reveal eager delay={0.15} y={28} className="flex justify-center lg:justify-end">
             <div className="relative">
               <div
                 className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-blue/12 to-transparent blur-2xl"
