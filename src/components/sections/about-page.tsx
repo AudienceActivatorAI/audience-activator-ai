@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Building2, MapPin, Target, Users } from "lucide-react";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/primitives";
 import { Reveal } from "@/components/reveal";
+import { FounderPortrait } from "@/components/sections/founder-portrait";
 import { buttonVariants } from "@/components/ui/button";
 import { TREDFI_URL } from "@/lib/products";
 import { cn } from "@/lib/utils";
@@ -120,12 +121,23 @@ export function AboutFounder() {
   return (
     <Section>
       <Container>
-        <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <SectionHeading
-            eyebrow="Leadership"
-            title="James Hamilton"
-            description="Managing Partner at TredFi and the product leader behind Audience Activator AI, DealerOS, and the connected dealer product ecosystem."
-          />
+        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,0.95fr)_1.1fr] lg:gap-16">
+          <div className="flex flex-col gap-8">
+            <SectionHeading
+              eyebrow="Leadership"
+              title="James Hamilton"
+              description="Managing Partner at TredFi and the product leader behind Audience Activator AI, DealerOS, and the connected dealer product ecosystem."
+            />
+
+            <Reveal delay={0.04}>
+              <div className="mx-auto w-full max-w-sm lg:mx-0">
+                <FounderPortrait />
+                <p className="mt-3 text-center font-mono text-[0.68rem] tracking-[0.14em] text-slate uppercase lg:text-left">
+                  Managing Partner · TredFi
+                </p>
+              </div>
+            </Reveal>
+          </div>
 
           <Reveal delay={0.08}>
             <div className="rounded-2xl border border-line bg-white p-8 shadow-sm">
