@@ -82,19 +82,17 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — absolute so collapsed panel does not inflate header height */}
       <div
         className={cn(
-          "md:hidden",
-          open ? "pointer-events-auto" : "pointer-events-none",
+          "absolute inset-x-0 top-16 z-50 md:hidden transition-all duration-200",
+          open
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-1 opacity-0",
         )}
+        aria-hidden={!open}
       >
-        <div
-          className={cn(
-            "mx-4 mt-1 origin-top rounded-2xl border border-line bg-white p-4 shadow-float transition-all duration-200",
-            open ? "scale-100 opacity-100" : "scale-95 opacity-0",
-          )}
-        >
+        <div className="mx-4 rounded-2xl border border-line bg-white p-4 shadow-float">
           <nav className="flex flex-col">
             {NAV.map((item) => (
               <Link
