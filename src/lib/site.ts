@@ -1,4 +1,4 @@
-export const SITE_URL = "https://audienceactivator.ai";
+export const SITE_URL = "https://www.audienceactivator.ai";
 export const SITE_NAME = "Audience Activator AI";
 export const SITE_TAGLINE = "Dealer Intelligence Infrastructure";
 export const SITE_DESCRIPTION =

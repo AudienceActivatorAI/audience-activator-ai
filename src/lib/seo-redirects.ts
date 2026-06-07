@@ -5,7 +5,7 @@ import type { Redirect } from "next/dist/lib/load-custom-routes";
  * Add paths from Search Console → Pages as you discover more.
  */
 export const legacyRedirects: Redirect[] = [
-  // Host canonicalization (www → apex) is handled in Vercel → Domains.
+  // Host canonicalization (apex → www) is handled in Vercel → Domains.
   // Do not duplicate it here — a double redirect causes a loop and GSC "Redirect error".
   // Legacy Webflow marketing pages → closest new destinations (no URL fragments — crawlers reject those)
   { source: "/enterprise", destination: "/products/dealeros", permanent: true },
