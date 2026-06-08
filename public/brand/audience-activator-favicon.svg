@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Audience Activator AI">
+  <rect width="128" height="128" rx="28" fill="#0A2540"/>
+  <rect x="12" y="12" width="104" height="104" rx="20" fill="none" stroke="#1F6FFF" stroke-opacity="0.35" stroke-width="3"/>
+  <text
+    x="64"
+    y="86"
+    font-family="'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif"
+    font-size="54"
+    font-weight="700"
+    letter-spacing="-0.04em"
+    fill="#FFFFFF"
+    text-anchor="middle"
+  >
+    AA
+  </text>
+</svg>

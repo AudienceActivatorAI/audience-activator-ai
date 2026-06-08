@@ -34,124 +34,149 @@ export type ProductPage = {
 
 export const productPages: Record<string, ProductPage> = {
   intelligence: {
-    tagline: "The intent data engine at the center of the platform",
+    tagline: "40+ data sources. One unified Intent Engine.",
     heroDescription:
-      "Audience Activator Intelligence is the central processing system for high-intent consumer data — cleaning, normalizing, enriching, and scoring every signal, then exporting it to the platforms and products that act on it.",
+      "Audience Activator Intelligence is the central processing system for in-market shopper data — unifying 40+ consumer sources, cleaning and enriching every signal with up to 100 attributes, then activating audiences across Meta, Google, programmatic, CRM, and every product in the platform.",
     problem:
-      "High-intent data arrives messy and fragmented — from pixels, forms, CRMs, and lender feeds — with no consistent schema, scoring, or way to activate it.",
+      "Legacy data vendors rely on static lists, black-box modeling, and quarterly refreshes. Dealers need fresh intent signal, transparent sourcing, and one-click activation — not another siloed feed.",
     features: [
       {
-        title: "Clean & normalize",
-        body: "De-duplicate, validate emails and phones, and standardize every source into one unified intent record.",
+        title: "Precision audience builder",
+        body: "Model hyper-targeted shopper audiences from 60+ billion weekly behavioral signals — prime, special finance, lease-to-own, and in-market vehicle interest.",
       },
       {
-        title: "Enrich & score",
-        body: "Add geo intelligence, credit-band indicators, and purchase-intent scoring with product-level interest tags.",
+        title: "Visitor identity tracker",
+        body: "Super Pixel typically identifies 30–60% of anonymous site visitors, matching them to verified profiles for ranked BDC follow-up.",
       },
       {
-        title: "Audience segmentation",
-        body: "Cluster and tag audiences — prime, special finance, lease-to-own, and more — ready for routing.",
+        title: "Omnichannel activator",
+        body: "Pre-built connectors push audiences to Meta, Google Ads, programmatic DSPs, Salesforce, HubSpot, and your CRM — daily refresh, cross-platform consistency.",
       },
       {
-        title: "Activate everywhere",
-        body: "Export hashed, platform-ready audiences to Meta, Google, Programmatic/CTV, your CRM, and Looker.",
+        title: "Transparent & compliant",
+        body: "SOC 2 tested, CCPA/GDPR compliant, deterministic email and phone matching — with documented data origin and opt-out on every dataset.",
       },
     ],
     howItWorks: [
-      { title: "Ingest & clean", body: "Raw data from pixels, forms, CRM, and lender feeds is validated and de-duplicated." },
-      { title: "Normalize & enrich", body: "Records become one schema, enriched with geo, credit band, and intent scores." },
-      { title: "Segment & export", body: "Audiences are tagged and exported as hashed, platform-ready segments." },
+      { title: "Ingest", body: "Online opt-in, offline verified records, and first-party pixel data flow into one Intent Engine schema." },
+      { title: "Enrich & score", body: "Profiles gain up to 100 attributes — demographics, geo, behaviors, and live purchase-intent signals refreshed daily." },
+      { title: "Activate", body: "Ranked audiences export to ad platforms, CRM, and DealerOS products — one login, deploy everywhere." },
     ],
     integrations: [
       "Super Pixel",
       "Meta Custom Audiences",
       "Google Customer Match",
       "Programmatic / CTV",
-      "We Finance USA",
+      "Salesforce & HubSpot",
       "Your CRM",
     ],
     metrics: [
-      { value: "Multi-platform", label: "Meta · Google · Programmatic · CRM" },
-      { value: "SHA-256", label: "Hashed & minimized by design" },
+      { value: "95%", label: "Match accuracy" },
+      { value: "60B+", label: "Weekly behavioral signals" },
+      { value: "100+", label: "Enriched attributes" },
+      { value: "30–60%", label: "Typical visitor ID rate" },
     ],
     related: ["super-pixel", "we-finance-usa", "bdc-copilot"],
   },
 
   "super-pixel": {
-    tagline: "See every customer journey in real time — before they submit a lead",
+    tagline: "Identify 30–60% of anonymous visitors — before they submit a lead",
     heroDescription:
-      "Super Pixel doesn't just count visitors — it tracks the entire path. See where shoppers came from, what vehicles they viewed, and their intent level before they ever fill out a form, then enrich that signal with credit, income, and asset data.",
+      "Super Pixel is the unified tracking layer for Audience Activator — not vanity analytics. It captures high-intent dealer events, resolves identity from 40+ enrichment sources, scores every shopper in real time, and pushes clean signal into ads, CRM, and BDC Copilot.",
     problem:
-      "You spend thousands on AutoTrader, CarGurus, Google, and Facebook to drive high-intent traffic — but 98% of visitors leave anonymously without submitting a lead. Every click you paid for walks out the door unseen.",
+      "You spend thousands on AutoTrader, CarGurus, Google, and Facebook — but 98% of visitors leave without a lead. Standard pixels count pageviews. Super Pixel tracks the full journey, identifies who they are, and ranks the next action before your team ever cold-calls.",
     featureGroups: [
       {
         name: "Capture",
-        description: "Live journey tracking across every traffic source.",
+        description: "High-intent events — not vanity metrics. Live journey tracking across every traffic source.",
         features: [
           {
             title: "Real-time event stream",
-            body: "Watch every customer journey as it happens — VDP views, credit app starts, inventory searches, and repeat visits in a live feed.",
+            body: "Watch journeys as they happen — VDP views, payment calculator use, trade-in tool, finance pre-approval, test drive requests, and repeat visits in a live feed.",
           },
           {
-            title: "Source attribution",
-            body: "Know exactly where each shopper came from: AutoTrader, CarGurus, Google Ads, Facebook, or direct — tied to the vehicles they viewed.",
+            title: "Behavioral depth",
+            body: "Scroll depth, exit intent, clicks, session duration, and return visits — the same behavioral signals used in AudienceLab V4 pixel deployments, not just pageviews.",
           },
           {
-            title: "Vehicle interest tracking",
-            body: "Capture the specific year, make, model, and trim a shopper researched — not just that they visited your site.",
+            title: "Dealer event taxonomy",
+            body: "Normalized events with VIN, stock number, trim, payment context, and source attribution from AutoTrader, CarGurus, Google Ads, Facebook, or direct.",
           },
         ],
       },
       {
         name: "Enrichment",
-        description: "Credit, income, and asset data that reveals who they are.",
+        description: "Identity resolution and 40+ data sources that reveal who is on your lot digitally.",
         features: [
           {
-            title: "Three customer segments",
-            body: "Classify every visitor as subprime (D–F), first-time buyer (G–H), or prime (A–C) — including the hidden prime buyers in traffic you thought was all subprime.",
+            title: "Visitor identity resolution",
+            body: "Typically match 30–60% of anonymous visitors to name, email, phone, address, and HEM — often within 15 minutes of install.",
           },
           {
-            title: "Income & asset intelligence",
-            body: "Go beyond credit scores with household income, net worth, and financial stability data — so you can approve subprime deals with confidence.",
+            title: "Credit & household context",
+            body: "Classify prime (A–C), subprime (D–F), and first-time buyer (G–H) segments — including hidden prime buyers in traffic that looks subprime.",
           },
           {
-            title: "Geographic clustering",
-            body: "See where your highest-intent prospects concentrate by city and DMA for smarter targeting and follow-up.",
+            title: "Income & geo intelligence",
+            body: "Household income, net worth, homeowner status, and DMA/ZIP clustering so targeting and follow-up match who the shopper actually is.",
           },
         ],
       },
       {
-        name: "Activation",
-        description: "Ranked signal that powers the rest of the platform.",
+        name: "Score & activate",
+        description: "Weighted intent scoring that triggers the right next step — not a raw lead dump.",
         features: [
           {
-            title: "Consent-aware routing",
-            body: "Enriched pixel audiences feed BDC Copilot with email-first, permission-aware follow-up — your traffic stays yours.",
+            title: "Weighted intent scoring",
+            body: "Test drive requests (95), finance pre-approval (90), form submits (80), trade-in tool (70), and payment calculator (60) — boosted by time-on-page, return visits, and vehicle saves.",
           },
           {
-            title: "Intent scoring",
-            body: "Every event rolls into Audience Activator Intelligence for ranked, work-ready buyer signal.",
+            title: "Consent-aware handoff",
+            body: "High-intent pixel events feed BDC Copilot with email-first, permission-aware follow-up — AI calls warm buyers; your team skips the 80% rejection rate.",
+          },
+          {
+            title: "Intelligence layer sync",
+            body: "Every event normalizes into Audience Activator Intelligence for ranked audiences, retargeting, lookalikes, and CRM-ready exports.",
+          },
+        ],
+      },
+      {
+        name: "Deploy everywhere",
+        description: "One pixel core. Every ad platform. Any dealer site.",
+        features: [
+          {
+            title: "Ad platform mappings",
+            body: "Pre-built mappings to Google Ads conversion actions, Meta standard events, TikTok optimization events, and programmatic CDP endpoints — one data layer, all channels.",
+          },
+          {
+            title: "Fast implementation",
+            body: "Deploy via WordPress, Webflow, Shopify, GTM, or custom dealer sites. Consent Mode v2, GDPR, and CCPA patterns built in.",
+          },
+          {
+            title: "Closed-loop attribution",
+            body: "Connect pixel signal to ad spend, CRM outcomes, and marketplace traffic — see which sources produce in-market buyers, not just clicks.",
           },
         ],
       },
     ],
     howItWorks: [
-      { title: "Capture", body: "The pixel tracks every visitor journey in real time — source, vehicles, and intent before a lead form is submitted." },
-      { title: "Enrich", body: "Credit ratings, income ranges, net worth, and geography reveal who the shopper actually is." },
-      { title: "Activate", body: "Ranked signal feeds BDC Copilot, Audience Activator Intelligence, and your team's next best action." },
+      { title: "Install & capture", body: "Embed the Super Pixel core on your site. High-intent events queue instantly — vehicle views, calculators, trade tools, and forms — with source and VIN context." },
+      { title: "Resolve & enrich", body: "Anonymous visitors match to verified profiles from 40+ sources. Credit band, income, geo, and behavioral history attach to one unified shopper record." },
+      { title: "Score & activate", body: "Intent-weighted signal routes to BDC Copilot, ad platforms, and Audience Activator Intelligence — ranked follow-up, not hundreds of cold leads." },
     ],
     integrations: [
       "Audience Activator Intelligence",
       "BDC Copilot",
-      "AutoTrader",
-      "CarGurus",
-      "Google Ads",
-      "Facebook",
+      "Google Ads & Meta",
+      "TikTok & Programmatic",
+      "AutoTrader & CarGurus",
+      "Your CRM",
     ],
     metrics: [
-      { value: "98%", label: "Visitors leave without a lead" },
-      { value: "55%", label: "Hidden prime in \"lost\" traffic" },
-      { value: "Real-time", label: "Live event stream" },
+      { value: "30–60%", label: "Typical visitor ID rate" },
+      { value: "98%", label: "Leave without a lead" },
+      { value: "55%", label: "Hidden prime buyers" },
+      { value: "15 min", label: "Time to first ID" },
     ],
     related: ["intelligence", "bdc-copilot", "we-finance-usa"],
   },

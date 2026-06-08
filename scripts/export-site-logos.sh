@@ -26,3 +26,8 @@ done
 for size in 180 512; do
   export_png "$BRAND/audience-activator-mark.svg" "$size" "$BRAND/audience-activator-mark-${size}.png"
 done
+
+cp "$BRAND/audience-activator-mark.svg" "$BRAND/audience-activator-favicon.svg"
+for size in 16 32 48 180 512; do
+  export_png "$BRAND/audience-activator-mark.svg" "$size" "$BRAND/audience-activator-favicon-${size}.png"
+done

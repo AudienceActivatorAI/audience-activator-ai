@@ -18,47 +18,47 @@ const events: FeedEvent[] = [
   {
     source: "AutoTrader",
     sourceColor: "bg-orange-500/20 text-orange-200",
-    action: "Viewed VDP",
+    action: "Test drive request · score 95",
     vehicle: "2021 Ford F-150 XLT",
-    location: "Seattle, WA",
+    location: "Seattle, WA · ID matched",
     intent: "High",
     ago: "Just now",
   },
   {
-    source: "Facebook",
-    sourceColor: "bg-blue-500/20 text-blue-200",
-    action: "Credit app start",
+    source: "Direct",
+    sourceColor: "bg-white/10 text-white/70",
+    action: "Finance pre-approval · score 90",
     vehicle: "2019 Honda Civic Sport",
-    location: "Tacoma, WA",
-    intent: "Rising",
-    ago: "2s ago",
+    location: "Tacoma, WA · Prime band",
+    intent: "High",
+    ago: "3s ago",
   },
   {
     source: "Google Ads",
     sourceColor: "bg-emerald-500/20 text-emerald-200",
-    action: "Viewed VDP",
+    action: "Trade-in tool · score 70",
     vehicle: "2022 Toyota Camry SE",
-    location: "Bellevue, WA",
-    intent: "High",
-    ago: "5s ago",
+    location: "Bellevue, WA · 3rd visit",
+    intent: "Rising",
+    ago: "8s ago",
+  },
+  {
+    source: "Facebook",
+    sourceColor: "bg-blue-500/20 text-blue-200",
+    action: "Payment calculator · score 60",
+    vehicle: "2020 Chevy Silverado LT",
+    location: "Everett, WA · Subprime",
+    intent: "Medium",
+    ago: "14s ago",
   },
   {
     source: "CarGurus",
     sourceColor: "bg-violet-500/20 text-violet-200",
-    action: "Search inventory",
+    action: "Scroll depth 75% · exit intent",
     vehicle: "SUVs under $20k",
-    location: "Everett, WA",
-    intent: "Medium",
-    ago: "12s ago",
-  },
-  {
-    source: "Direct",
-    sourceColor: "bg-white/10 text-white/70",
-    action: "Viewed VDP",
-    vehicle: "2020 Chevy Silverado",
-    location: "Spokane, WA",
+    location: "Spokane, WA · Enriching",
     intent: "Rising",
-    ago: "18s ago",
+    ago: "22s ago",
   },
 ];
 
@@ -187,8 +187,8 @@ export function SuperPixelLiveFeed() {
 
       <div className="border-t border-white/10 bg-navy-900/40 px-5 py-3.5 sm:px-6">
         <p className="text-xs leading-relaxed text-white/45">
-          Every event enriches the unified profile before a lead form is submitted — then routes
-          into Audience Activator Intelligence and BDC Copilot.
+          High-intent events score in real time — then enrich, match identity, and route into
+          Audience Activator Intelligence and BDC Copilot. Typically 30–60% of visitors identified.
         </p>
       </div>
     </div>

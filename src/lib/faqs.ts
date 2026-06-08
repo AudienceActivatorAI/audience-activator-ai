@@ -72,17 +72,27 @@ export const productFaqs: Record<string, FaqItem[]> = {
     {
       question: "What does Super Pixel track?",
       answer:
-        "Super Pixel tracks the full shopper journey in real time — source attribution, vehicle interest (year, make, model, trim), repeat visits, and high-intent actions before a lead form is submitted.",
+        "Super Pixel tracks high-intent dealer events — vehicle views, payment calculator, trade-in tool, finance pre-approval, test drive requests, form starts, plus behavioral signals like scroll depth, exit intent, and repeat visits. Every event carries source attribution and VIN/stock context.",
     },
     {
       question: "How is Super Pixel different from standard analytics?",
       answer:
-        "Standard analytics counts traffic. Super Pixel resolves identity and enriches visitors with credit band, income, and asset context so your team knows who is on the lot digitally — not just that someone visited.",
+        "Standard analytics counts pageviews. Super Pixel resolves 30–60% of anonymous visitors to verified profiles, enriches them with credit band, income, and household data, and scores intent so BDC Copilot can follow up on warm buyers — not dump hundreds of cold leads on your team.",
+    },
+    {
+      question: "How fast does identity resolution start working?",
+      answer:
+        "Most deployments begin identifying visitors within about 15 minutes of install. Match rates typically reach 30–60% depending on traffic volume, consent, and site engagement.",
+    },
+    {
+      question: "Which ad platforms does Super Pixel connect to?",
+      answer:
+        "Pre-built mappings send normalized events to Google Ads conversion actions, Meta standard events, TikTok optimization events, and programmatic CDP endpoints — plus audience exports for Meta Custom Audiences and Google Customer Match.",
     },
     {
       question: "Does Super Pixel feed other products?",
       answer:
-        "Yes. Super Pixel is a primary signal source for Audience Activator Intelligence and BDC Copilot — consent-aware, ranked follow-up based on live journey and intent.",
+        "Yes. Super Pixel is the primary first-party signal for Audience Activator Intelligence and BDC Copilot — consent-aware, intent-weighted follow-up based on live journey data, not static lists.",
     },
   ],
   "bdc-copilot": [

@@ -17,7 +17,7 @@ export function IntelligenceEngine({ className }: { className?: string }) {
     <svg
       viewBox="0 0 800 440"
       role="img"
-      aria-label="Audience Activator Intelligence engine: signals resolved, scored, and activated"
+      aria-label="Audience Activator Intent Engine: 40+ data sources resolved, scored, and activated"
       className={cn("h-auto w-full", className)}
       fill="none"
     >
@@ -107,7 +107,7 @@ export function IntelligenceEngine({ className }: { className?: string }) {
         fontFamily="var(--font-mono)"
         letterSpacing="0.18em"
       >
-        INTELLIGENCE
+        INTENT ENGINE
       </text>
       {["Resolve identity", "Score intent", "Decide action"].map((step, i) => (
         <g key={step}>

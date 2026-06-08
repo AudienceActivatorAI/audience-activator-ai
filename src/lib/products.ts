@@ -51,7 +51,7 @@ export const products: Product[] = [
     name: "Super Pixel",
     layer: "Intelligence",
     summary:
-      "Real-time journey tracking with credit, income, and asset enrichment — see who shoppers are before they submit a lead.",
+      "Unified pixel tracking with 30–60% visitor ID, intent scoring, and ad platform sync — see who shoppers are before they submit a lead.",
     icon: Fingerprint,
   },
   {
