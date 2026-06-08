@@ -31,18 +31,18 @@ const principles = [
 const milestones = [
   {
     year: "2024",
-    title: "TredFi launches in Seattle",
-    body: "James Hamilton founds TredFi to replace fragmented marketing stacks with integrated technology for independent wheel and tire merchants — visualization, eCommerce, embedded financing, and AI-driven campaigns in one platform.",
+    title: "TredFi & Audience Activator launch",
+    body: "James Hamilton founds TredFi in Seattle and launches Audience Activator at the same time — integrated technology for independent wheel and tire merchants alongside Dealer Intelligence Infrastructure™ for audience identity, intent, and activation.",
   },
   {
     year: "2025",
     title: "Automotive expansion",
-    body: "The same integration philosophy moves into dealerships: Marketplace Copilot for mobile listing workflows, voice and SMS engagement, and the DealerOS command center that governs every capability from one backend.",
+    body: "The same integration philosophy moves into dealerships: Marketplace Copilot for mobile listing workflows, voice and SMS engagement, and the DealerOS command center that governs every capability from one backend — introduced through enterprise and agency partnerships.",
   },
   {
-    year: "Today",
-    title: "Audience Activator AI",
-    body: "Dealer Intelligence Infrastructure™ — intent, identity, and activation on one layer. Super Pixel, BDC Copilot, Trade Copilot, and the full product ecosystem run through DealerOS with your data at the center.",
+    year: "2026",
+    title: "Platform goes direct",
+    body: "Audience Activator AI expands beyond enterprise and agency partnerships — the full platform, product ecosystem, and DealerOS command center are now available directly to dealer groups ready to own their shopper intelligence.",
   },
 ];
 
