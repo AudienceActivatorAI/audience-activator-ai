@@ -5,18 +5,15 @@ import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const productOptions = [
-  "General platform overview",
-  "DealerOS",
-  "BDC Copilot",
-  "Super Pixel",
-  "Marketplace Copilot",
-  "Trade Copilot",
-  "We Finance USA",
-  "Buyer Center AI",
-  "Audience Activator Intelligence",
-  "TredFi",
-];
+const demoFocusOptions = [
+  "Turn anonymous traffic into pipeline",
+  "Automate BDC & speed-to-lead",
+  "Marketplace & inventory motion",
+  "Operations & command center",
+  "Not sure — show me the stack",
+] as const;
+
+const defaultDemoFocus = "Full platform walkthrough";
 
 const fieldClass =
   "w-full rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/35 outline-none transition-colors focus:border-blue/50 focus:bg-white/[0.07]";
@@ -135,20 +132,28 @@ export function DemoRequestForm() {
           />
         </label>
 
-        <label className="flex flex-col gap-1.5">
+        <label className="flex flex-col gap-1.5 sm:col-span-2">
           <span className="font-mono text-[0.62rem] tracking-[0.14em] text-white/45 uppercase">
-            Product interest
+            Demo focus <span className="text-white/30">(optional)</span>
           </span>
-          <select name="productInterest" defaultValue="" className={cn(fieldClass, "appearance-none")}>
-            <option value="" className="bg-navy-900">
-              Select a product
+          <select
+            name="demoFocus"
+            defaultValue={defaultDemoFocus}
+            className={cn(fieldClass, "appearance-none")}
+          >
+            <option value={defaultDemoFocus} className="bg-navy-900">
+              {defaultDemoFocus}
             </option>
-            {productOptions.map((p) => (
-              <option key={p} value={p} className="bg-navy-900">
-                {p}
+            {demoFocusOptions.map((option) => (
+              <option key={option} value={option} className="bg-navy-900">
+                {option}
               </option>
             ))}
           </select>
+          <span className="text-xs leading-relaxed text-white/40">
+            One software license covers the full platform — tell us what matters most
+            at your store.
+          </span>
         </label>
 
         <label className="flex flex-col gap-1.5 sm:col-span-2">
@@ -158,7 +163,7 @@ export function DemoRequestForm() {
           <textarea
             name="message"
             rows={3}
-            placeholder="Rooftop count, current tools, or what you want to see on the walkthrough."
+            placeholder="Rooftop count, current stack, or what you want to improve first."
             className={cn(fieldClass, "resize-none")}
           />
         </label>

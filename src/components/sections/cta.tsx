@@ -31,7 +31,8 @@ export function CTA() {
               <div className="mb-5">
                 <h3 className="text-lg font-semibold text-white">Request a demo</h3>
                 <p className="mt-1 text-sm text-white/55">
-                  Tell us about your store and we&apos;ll follow up with a tailored walkthrough.
+                  One license, full platform. Tell us about your store and we&apos;ll
+                  tailor the walkthrough to your priorities.
                 </p>
               </div>
               <DemoRequestForm />

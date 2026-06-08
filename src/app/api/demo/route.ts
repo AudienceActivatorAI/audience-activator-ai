@@ -7,6 +7,7 @@ type DemoPayload = {
   email?: string;
   phone?: string;
   message?: string;
+  demoFocus?: string;
   productInterest?: string;
 };
 
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
   const email = clean(body.email, 200);
   const phone = clean(body.phone, 40);
   const message = clean(body.message, 2000);
-  const productInterest = clean(body.productInterest, 120);
+  const demoFocus = clean(body.demoFocus ?? body.productInterest, 120);
 
   if (!dealership || !name || !email) {
     return NextResponse.json(
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
       { label: "Contact", value: name },
       { label: "Email", value: email },
       ...(phone ? [{ label: "Phone", value: phone }] : []),
-      ...(productInterest ? [{ label: "Product interest", value: productInterest }] : []),
+      ...(demoFocus ? [{ label: "Demo focus", value: demoFocus }] : []),
       ...(message ? [{ label: "Message", value: message }] : []),
     ],
   });
