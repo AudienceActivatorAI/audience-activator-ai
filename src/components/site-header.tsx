@@ -58,7 +58,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link
-            href="#"
+            href="/sign-in"
             className="px-3 py-2 text-sm font-medium text-navy/70 transition-colors hover:text-navy"
           >
             Sign in
@@ -107,7 +107,7 @@ export function SiteHeader() {
           </nav>
           <div className="mt-3 flex flex-col gap-2 border-t border-line pt-3">
             <Link
-              href="#"
+              href="/sign-in"
               onClick={() => setOpen(false)}
               className={cn(buttonVariants({ variant: "outline", size: "md" }))}
             >

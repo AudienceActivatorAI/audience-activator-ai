@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Building2, MapPin, Target, Users } from "lucide-react";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/primitives";
@@ -120,66 +121,87 @@ export function AboutFounder() {
   return (
     <Section>
       <Container>
-        <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <SectionHeading
-            eyebrow="Leadership"
-            title="James Hamilton"
-            description="Managing Partner at TredFi and the product leader behind Audience Activator AI, DealerOS, and the connected dealer product ecosystem."
-          />
-
-          <Reveal delay={0.08}>
-            <div className="rounded-2xl border border-line bg-white p-8 shadow-sm">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full bg-mist px-3 py-1 font-mono text-[0.68rem] tracking-[0.14em] text-slate uppercase">
-                  Managing Partner
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-sm text-slate">
-                  <MapPin className="size-3.5 shrink-0" />
-                  Seattle, Washington
-                </span>
+        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-16 xl:grid-cols-[minmax(0,24rem)_1fr]">
+          <Reveal>
+            <figure className="mx-auto w-full max-w-sm lg:mx-0 lg:max-w-none">
+              <div className="overflow-hidden rounded-2xl border border-line bg-mist shadow-float">
+                <Image
+                  src="/about/james-hamilton-portrait.jpg"
+                  alt="Professional portrait of James Hamilton, Managing Partner at TredFi and founder of Audience Activator AI"
+                  width={900}
+                  height={1200}
+                  priority
+                  sizes="(max-width: 1024px) 20rem, 24rem"
+                  className="aspect-[3/4] h-auto w-full object-cover object-[center_12%]"
+                />
               </div>
-
-              <p className="mt-6 text-base leading-relaxed text-slate">
-                James founded TredFi to give independent merchants an integrated
-                alternative to juggling agencies, lenders, website vendors, and ad
-                platforms that never talk to each other. That work started in
-                wheel and tire — 3D visualization, conversion-ready eCommerce,
-                embedded multi-lender financing, and AI-tuned marketing — and
-                expanded into automotive as the team proved the same pattern on
-                dealership floors: fragmented tools, rented relationships, and
-                reps working blind.
-              </p>
-
-              <p className="mt-4 text-base leading-relaxed text-slate">
-                Audience Activator AI is the next step — dealer intelligence
-                infrastructure where identity, intent, and activation live on one
-                layer, governed by DealerOS. The goal is unchanged: measurable
-                outcomes, merchant-by-merchant trust, and technology that helps
-                operators look and perform like a national chain without giving
-                up control of their data.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href={JAMES_LINKEDIN}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
-                >
-                  James on LinkedIn
-                </a>
-                <a
-                  href={TREDFI_LINKEDIN}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-                >
-                  TredFi company page
-                  <ArrowRight className="size-4" />
-                </a>
-              </div>
-            </div>
+              <figcaption className="mt-4 text-center text-sm text-slate lg:text-left">
+                James Hamilton · Managing Partner, TredFi
+              </figcaption>
+            </figure>
           </Reveal>
+
+          <div className="min-w-0">
+            <SectionHeading
+              eyebrow="Leadership"
+              title="James Hamilton"
+              description="Managing Partner at TredFi and the product leader behind Audience Activator AI, DealerOS, and the connected dealer product ecosystem."
+            />
+
+            <Reveal delay={0.08}>
+              <div className="mt-10 rounded-2xl border border-line bg-white p-8 shadow-sm">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-mist px-3 py-1 font-mono text-[0.68rem] tracking-[0.14em] text-slate uppercase">
+                    Managing Partner
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-sm text-slate">
+                    <MapPin className="size-3.5 shrink-0" />
+                    Seattle, Washington
+                  </span>
+                </div>
+
+                <p className="mt-6 text-base leading-relaxed text-slate">
+                  James founded TredFi to give independent merchants an integrated
+                  alternative to juggling agencies, lenders, website vendors, and ad
+                  platforms that never talk to each other. That work started in
+                  wheel and tire — 3D visualization, conversion-ready eCommerce,
+                  embedded multi-lender financing, and AI-tuned marketing — and
+                  expanded into automotive as the team proved the same pattern on
+                  dealership floors: fragmented tools, rented relationships, and
+                  reps working blind.
+                </p>
+
+                <p className="mt-4 text-base leading-relaxed text-slate">
+                  Audience Activator AI is the next step — dealer intelligence
+                  infrastructure where identity, intent, and activation live on one
+                  layer, governed by DealerOS. The goal is unchanged: measurable
+                  outcomes, merchant-by-merchant trust, and technology that helps
+                  operators look and perform like a national chain without giving
+                  up control of their data.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a
+                    href={JAMES_LINKEDIN}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                  >
+                    James on LinkedIn
+                  </a>
+                  <a
+                    href={TREDFI_LINKEDIN}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+                  >
+                    TredFi company page
+                    <ArrowRight className="size-4" />
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </Container>
     </Section>
