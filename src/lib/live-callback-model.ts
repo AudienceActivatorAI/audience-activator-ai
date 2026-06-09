@@ -271,6 +271,15 @@ export type ScenarioDemoStep = {
   handoff: string;
 };
 
+export type ScenarioPlaybook = {
+  triggerTitle: string;
+  triggerBody: string;
+  openingTitle: string;
+  dialogue: string[];
+  flowSteps: [string, string, string];
+  handoffResult: string;
+};
+
 export const scenarioDemoSteps: Record<SalesProblemOptionId, ScenarioDemoStep> = {
   fresh_internet_lead: {
     signal: "New marketplace lead matched to active inventory",
@@ -296,6 +305,94 @@ export const scenarioDemoSteps: Record<SalesProblemOptionId, ScenarioDemoStep> =
     signal: "Payment, credit, or approval questions detected",
     action: "Eric keeps finance questions practical and compliant",
     handoff: "Sensitive buyer routed with context — no messy handoff",
+  },
+};
+
+export const scenarioPlaybooks: Record<SalesProblemOptionId, ScenarioPlaybook> = {
+  fresh_internet_lead: {
+    triggerTitle: "Fresh ADF lead just arrived",
+    triggerBody:
+      "A shopper asked about pricing and availability on a vehicle that is still in stock.",
+    openingTitle: "Sales lead opening",
+    dialogue: [
+      "Hi, this is Maya with the sales team. I saw your interest come through and wanted to help right away.",
+      "Are you still looking for pricing, availability, or a quick appointment on this vehicle?",
+      "If it makes sense, I can get the right manager a clean handoff with your next best step.",
+    ],
+    flowSteps: [
+      "New marketplace lead is matched to active inventory",
+      "Maya starts the first call while the lead is hot",
+      "Appointment ask and vehicle context are prepared for the salesperson",
+    ],
+    handoffResult: "Salesperson gets a clean handoff instead of a cold lead.",
+  },
+  missed_appointment: {
+    triggerTitle: "Missed appointment flagged",
+    triggerBody:
+      "A customer missed or softened an appointment and needs a helpful next step.",
+    openingTitle: "Appointment rescue",
+    dialogue: [
+      "Hi, this is Avery with the appointment team. I wanted to make it easy to keep your visit on track.",
+      "Do you still want to come in, or would another time work better for your schedule?",
+      "I can confirm the vehicle, update the appointment, and make sure the store is ready for you.",
+    ],
+    flowSteps: [
+      "No-show or softened appointment flagged in CRM",
+      "Avery reaches out with a calm reschedule path",
+      "Updated appointment details are confirmed with the store",
+    ],
+    handoffResult: "Appointment is confirmed or rescued without pressure.",
+  },
+  aged_lead_follow_up: {
+    triggerTitle: "Aged lead reactivated",
+    triggerBody:
+      "An older internet lead was re-enriched with fresh intent and vehicle context.",
+    openingTitle: "Reactivation opening",
+    dialogue: [
+      "Hi, this is Maya following up on your earlier vehicle interest.",
+      "I wanted to check whether you are still looking at that model or if your needs changed.",
+      "If you are still in market, I can line up the next step with the right person on the floor.",
+    ],
+    flowSteps: [
+      "Aged lead re-enriched with fresh intent signal",
+      "Maya restarts the conversation with updated vehicle context",
+      "Follow-up timing and vehicle match are queued for the salesperson",
+    ],
+    handoffResult: "Stalled opportunity moves back into active follow-up.",
+  },
+  trade_in_question: {
+    triggerTitle: "Trade-in question detected",
+    triggerBody:
+      "The buyer is asking about trade value, payoff, or equity before moving forward.",
+    openingTitle: "Trade context gathering",
+    dialogue: [
+      "Hi, this is Eric. I can help gather the trade context before a manager steps in.",
+      "Are your main questions about payoff, equity, or what your trade may be worth?",
+      "I will keep it practical and pass the right details forward so the next conversation starts clean.",
+    ],
+    flowSteps: [
+      "Buyer asks about trade value, payoff, or equity",
+      "Eric gathers trade context before manager involvement",
+      "Appraisal and payoff details are prepared for manager review",
+    ],
+    handoffResult: "Manager receives clean trade details for the next step.",
+  },
+  finance_handoff: {
+    triggerTitle: "Finance-sensitive questions detected",
+    triggerBody:
+      "The buyer has payment, credit, trade, or approval questions before the next handoff.",
+    openingTitle: "Finance handoff",
+    dialogue: [
+      "Hi, this is Eric. I can help gather the finance and trade context before a manager steps in.",
+      "Are your main questions about payment range, credit, payoff, or what your trade may be worth?",
+      "I will keep it practical and pass the right details forward so the next conversation starts clean.",
+    ],
+    flowSteps: [
+      "Payment, credit, or approval questions detected",
+      "Eric keeps finance questions practical and compliant",
+      "Finance context is routed to the right manager workflow",
+    ],
+    handoffResult: "Sensitive buyer routed with context — no messy handoff.",
   },
 };
 
