@@ -7,7 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { CTA } from "@/components/sections/cta";
 import { FaqSection } from "@/components/sections/faq-section";
 import { getProductFaqs } from "@/lib/faqs";
-import { LiveOutboundAgent } from "@/components/product/live-outbound-agent";
+import { OutboundScenarioDemo } from "@/components/product/outbound-scenario-demo";
 import { ProfileCard } from "@/components/product/profile-card";
 import { getProductProfileCard } from "@/components/product/product-profile-cards";
 import { productVisuals } from "@/components/product/product-visuals";
@@ -202,7 +202,7 @@ export function ProductDetail({
         </Container>
       </Section>
 
-      {product.slug === "bdc-copilot" ? <LiveOutboundAgent /> : null}
+      {product.slug === "bdc-copilot" ? <OutboundScenarioDemo /> : null}
 
       {visual && VisualComponent ? (
         <Section tone="mist" className="overflow-hidden">

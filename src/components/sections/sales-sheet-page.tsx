@@ -59,7 +59,7 @@ export function SalesSheetHero() {
                 rel="noopener noreferrer"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
               >
-                Try the live demo
+                Try the interactive demo
               </a>
             </div>
           </div>
@@ -387,7 +387,7 @@ export function SalesSheetCTA() {
               Map your store to a territory slot.
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate">
-              Hear the live outbound agent, walk through manager control, and confirm
+              Watch outbound scenarios, walk through manager control, and confirm
               whether your market still has a covered launch slot for the June offer.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3 print:hidden">
@@ -401,7 +401,7 @@ export function SalesSheetCTA() {
                 rel="noopener noreferrer"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
               >
-                Open live demo
+                Open interactive demo
               </a>
               <Link
                 href="/#cta"

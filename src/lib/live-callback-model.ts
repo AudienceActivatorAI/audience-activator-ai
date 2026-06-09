@@ -265,6 +265,40 @@ export const salesProblemOptions: SalesProblemOption[] = [
   },
 ];
 
+export type ScenarioDemoStep = {
+  signal: string;
+  action: string;
+  handoff: string;
+};
+
+export const scenarioDemoSteps: Record<SalesProblemOptionId, ScenarioDemoStep> = {
+  fresh_internet_lead: {
+    signal: "New marketplace lead matched to active inventory",
+    action: "Maya starts the first call while the lead is still hot",
+    handoff: "Salesperson gets a clean handoff instead of a cold lead",
+  },
+  missed_appointment: {
+    signal: "No-show or softened appointment flagged in CRM",
+    action: "Avery reaches out with a calm reschedule path",
+    handoff: "Appointment is confirmed or rescued without pressure",
+  },
+  aged_lead_follow_up: {
+    signal: "Aged lead re-enriched with fresh intent signal",
+    action: "Maya restarts the conversation with updated vehicle context",
+    handoff: "Stalled opportunity moves back into active follow-up",
+  },
+  trade_in_question: {
+    signal: "Buyer asks about trade value, payoff, or equity",
+    action: "Eric gathers trade context before manager involvement",
+    handoff: "Manager receives clean trade details for the next step",
+  },
+  finance_handoff: {
+    signal: "Payment, credit, or approval questions detected",
+    action: "Eric keeps finance questions practical and compliant",
+    handoff: "Sensitive buyer routed with context — no messy handoff",
+  },
+};
+
 export function normalizePhone(value: string): string {
   const trimmed = value.trim();
   if (trimmed.startsWith("+")) return trimmed.replace(/[^\d+]/g, "");

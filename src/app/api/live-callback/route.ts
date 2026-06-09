@@ -76,7 +76,21 @@ function addOptionalDynamicVariable(
   if (value) dynamicVariables[key] = value;
 }
 
+function isPublicLiveCallbackEnabled(): boolean {
+  return process.env.LIVE_CALLBACK_PUBLIC_ENABLED === "true";
+}
+
 export async function POST(req: NextRequest) {
+  if (!isPublicLiveCallbackEnabled()) {
+    return NextResponse.json(
+      {
+        error:
+          "Public live callbacks are disabled. Request a guided demo at audienceactivator.ai instead.",
+      },
+      { status: 410 },
+    );
+  }
+
   try {
     const body = (await req.json()) as {
       profileId?: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Phone, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
   aiEmployeeProfiles,
@@ -12,13 +12,11 @@ import { cn } from "@/lib/utils";
 type Props = {
   selectedEmployeeId: AiEmployeeId | null;
   onSelectEmployee: (employeeId: AiEmployeeId) => void;
-  onCallEmployee: (employeeId: AiEmployeeId) => void;
 };
 
 export function AiEmployeeRoster({
   selectedEmployeeId,
   onSelectEmployee,
-  onCallEmployee,
 }: Props) {
   return (
     <section>
@@ -61,7 +59,7 @@ export function AiEmployeeRoster({
                   loading="lazy"
                 />
                 <div className="absolute left-4 top-4 rounded-lg border border-white/15 bg-navy-950/85 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                  {isSelected ? "Selected" : "Choose"}
+                  {isSelected ? "Watching" : "Agent"}
                 </div>
               </div>
 
@@ -73,46 +71,20 @@ export function AiEmployeeRoster({
                   {employee.summary}
                 </p>
 
-                {isSelected ? (
-                  <div className="mt-4 rounded-xl border border-blue/20 bg-navy-950/60 p-4">
-                    <p className="font-mono text-[0.62rem] tracking-[0.16em] text-blue-300 uppercase">
-                      {employee.readoutTitle}
-                    </p>
-                    <div className="mt-3 space-y-2 text-sm leading-relaxed text-white/75">
-                      {employee.readoutLines.map((line) => (
-                        <p key={line}>{line}</p>
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
-
-                <div className="mt-5 grid gap-2">
-                  <button
-                    type="button"
-                    onClick={() => onSelectEmployee(employee.id)}
-                    className={cn(
-                      buttonVariants({
-                        variant: isSelected ? "accent" : "glass",
-                        size: "md",
-                      }),
-                      "w-full rounded-xl",
-                    )}
-                    aria-pressed={isSelected}
-                  >
-                    {isSelected ? "Selected" : "Choose"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onCallEmployee(employee.id)}
-                    className={cn(
-                      buttonVariants({ variant: "accent", size: "md" }),
-                      "w-full rounded-xl",
-                    )}
-                  >
-                    <Phone />
-                    Call Me Live
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => onSelectEmployee(employee.id)}
+                  className={cn(
+                    buttonVariants({
+                      variant: isSelected ? "accent" : "glass",
+                      size: "md",
+                    }),
+                    "mt-5 w-full rounded-xl",
+                  )}
+                  aria-pressed={isSelected}
+                >
+                  {isSelected ? "Watching scenario" : "Watch scenario"}
+                </button>
               </div>
             </article>
           );

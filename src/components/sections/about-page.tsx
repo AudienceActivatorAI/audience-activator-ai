@@ -24,7 +24,7 @@ const principles = [
   {
     icon: Users,
     title: "Built with operators",
-    body: "We ship from real merchant and dealer floors — mobile posting, live callbacks, manager handoffs, and consent-aware outreach tuned for how stores actually work.",
+    body: "We ship from real merchant and dealer floors — mobile posting, guided scenario demos, manager handoffs, and consent-aware outreach tuned for how stores actually work.",
   },
 ];
 
