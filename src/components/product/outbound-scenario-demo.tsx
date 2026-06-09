@@ -28,6 +28,8 @@ export function OutboundScenarioDemo() {
     React.useState<AiEmployeeId | null>(defaultDefaults.employeeId);
   const [selectedProblemId, setSelectedProblemId] =
     React.useState<SalesProblemOptionId>(defaultProblemId);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [playError, setPlayError] = React.useState<string | null>(null);
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
 
   const problem = resolveSalesProblemOption(selectedProblemId);
@@ -51,11 +53,56 @@ export function OutboundScenarioDemo() {
   React.useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    setIsPlaying(false);
+    setPlayError(null);
+    video.pause();
+    video.currentTime = 0;
     video.load();
-    void video.play().catch(() => {
-      // Autoplay may be blocked until user interacts.
-    });
-  }, [employee.id, selectedProblemId]);
+  }, [employee.motionSrc]);
+
+  async function playScenario() {
+    const video = videoRef.current;
+    if (!video) return;
+
+    setPlayError(null);
+    video.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+      try {
+        await new Promise<void>((resolve, reject) => {
+          const onReady = () => {
+            cleanup();
+            resolve();
+          };
+          const onError = () => {
+            cleanup();
+            reject(new Error("Video failed to load."));
+          };
+          const cleanup = () => {
+            video.removeEventListener("loadeddata", onReady);
+            video.removeEventListener("error", onError);
+          };
+          video.addEventListener("loadeddata", onReady);
+          video.addEventListener("error", onError);
+          video.load();
+        });
+      } catch {
+        setPlayError("Video is still loading. Try again in a moment.");
+        return;
+      }
+    }
+
+    video.currentTime = 0;
+    video.muted = true;
+
+    try {
+      await video.play();
+      setIsPlaying(true);
+    } catch {
+      setPlayError("Unable to start playback. Use the video controls below.");
+      setIsPlaying(false);
+    }
+  }
 
   return (
     <Section id="outbound-scenario-demo" tone="dark" className="overflow-hidden">
@@ -106,18 +153,22 @@ export function OutboundScenarioDemo() {
 
           <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)]">
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-navy-950/80">
-              <div className="relative aspect-[9/16] max-h-[520px] w-full bg-navy-950 sm:aspect-video sm:max-h-none">
-                <video
-                  ref={videoRef}
-                  key={`${employee.id}-${selectedProblemId}`}
-                  src={employee.motionSrc}
-                  poster={employee.portraitSrc}
-                  playsInline
-                  muted
-                  loop
-                  controls
-                  className="h-full w-full object-cover object-top"
-                />
+              <div className="relative mx-auto w-full max-w-[360px] bg-navy-950">
+                <div className="aspect-[9/16] w-full">
+                  <video
+                    ref={videoRef}
+                    src={employee.motionSrc}
+                    poster={employee.portraitSrc}
+                    playsInline
+                    muted
+                    loop
+                    controls
+                    preload="metadata"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    className="size-full object-contain"
+                  />
+                </div>
               </div>
               <div className="border-t border-white/10 p-5">
                 <p className="font-mono text-[0.62rem] tracking-[0.16em] text-blue-300 uppercase">
@@ -144,19 +195,18 @@ export function OutboundScenarioDemo() {
                 </p>
                 <button
                   type="button"
-                  onClick={() => {
-                    const video = videoRef.current;
-                    if (!video) return;
-                    void video.play();
-                  }}
+                  onClick={() => void playScenario()}
                   className={cn(
                     buttonVariants({ variant: "glass", size: "md" }),
                     "mt-5 w-full rounded-xl",
                   )}
                 >
                   <Play />
-                  Play scenario
+                  {isPlaying ? "Playing scenario" : "Play scenario"}
                 </button>
+                {playError ? (
+                  <p className="mt-2 text-sm text-amber-200/90">{playError}</p>
+                ) : null}
               </div>
 
               <div className="grid gap-3">
