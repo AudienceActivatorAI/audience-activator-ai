@@ -1,5 +1,6 @@
 import {
   convertToModelMessages,
+  gateway,
   streamText,
   type UIMessage,
 } from "ai";
@@ -83,7 +84,7 @@ export async function POST(request: Request) {
     }
 
     const result = streamText({
-      model: "openai/gpt-5.4",
+      model: gateway("openai/gpt-5.4"),
       system: buildScenarioChatSystemPrompt(problemId, employeeId),
       messages: await convertToModelMessages(messages),
     });
@@ -91,7 +92,8 @@ export async function POST(request: Request) {
     return result.toUIMessageStreamResponse({
       headers: corsHeaders(origin),
     });
-  } catch {
+  } catch (error) {
+    console.error("scenario-chat failed", error);
     return Response.json(
       { error: "Unable to process your question right now." },
       { status: 500, headers: corsHeaders(origin) },

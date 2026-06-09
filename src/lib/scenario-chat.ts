@@ -8,6 +8,10 @@ import {
 } from "@/lib/live-callback-model";
 
 export function isScenarioChatConfigured() {
+  // On Vercel, AI Gateway auth is injected at runtime via OIDC — not always
+  // present in process.env during our preflight check.
+  if (process.env.VERCEL === "1") return true;
+
   return Boolean(
     process.env.AI_GATEWAY_API_KEY?.trim() ||
       process.env.VERCEL_OIDC_TOKEN?.trim(),

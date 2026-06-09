@@ -128,9 +128,7 @@ export function ScenarioFollowUpChat({
 
       {error ? (
         <p className="mt-3 text-sm text-amber-200/90">
-          {error.message.includes("503")
-            ? "Chat preview is not live yet — AI Gateway still needs to be connected on Vercel."
-            : "Unable to send that question right now. Try again in a moment."}
+          Unable to send that question right now. Try again in a moment.
         </p>
       ) : null}
 
