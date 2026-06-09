@@ -127,8 +127,8 @@ export function OutboundScenarioDemo() {
           tone="dark"
           align="center"
           eyebrow="Outbound execution demo"
-          title="Watch the AI sales pod handle a real dealer scenario."
-          description="Pick the sales problem, choose an agent, and step through how BDC Copilot opens, qualifies, and tees up the handoff — without placing a live call."
+          title="See your AI BDC team handle a real sales scenario."
+          description="Pick the sales problem, select an agent, and follow the full flow — how BDC Copilot opens the conversation, qualifies the lead, and prepares a clean handoff. Interactive preview only."
         />
 
         <div className="mx-auto mt-10 max-w-5xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-float sm:p-8">
