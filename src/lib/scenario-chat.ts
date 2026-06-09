@@ -7,6 +7,39 @@ import {
   type SalesProblemOptionId,
 } from "@/lib/live-callback-model";
 
+/** Override in Vercel env if a model is blocked on your AI Gateway tier. */
+export const DEFAULT_SCENARIO_CHAT_MODEL = "google/gemini-2.0-flash";
+
+const SCENARIO_CHAT_MODEL_FALLBACKS = [
+  "google/gemini-2.0-flash",
+  "openai/gpt-4o-mini",
+  "anthropic/claude-3.5-haiku",
+] as const;
+
+export function getScenarioChatModels() {
+  const preferred = process.env.SCENARIO_CHAT_MODEL?.trim();
+  const models = preferred
+    ? [preferred, ...SCENARIO_CHAT_MODEL_FALLBACKS]
+    : [...SCENARIO_CHAT_MODEL_FALLBACKS];
+  return [...new Set(models)];
+}
+
+export function isGatewayModelRestrictedError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("RestrictedModelsError") ||
+    message.includes("Free tier users do not have access") ||
+    message.includes("restricted access due to abuse")
+  );
+}
+
+export function getScenarioChatErrorMessage(error: unknown) {
+  if (isGatewayModelRestrictedError(error)) {
+    return "AI Gateway needs a free-tier model or paid credits. In Vercel, add AI credits or set SCENARIO_CHAT_MODEL to google/gemini-2.0-flash.";
+  }
+  return "Unable to process your question right now. Try again in a moment.";
+}
+
 export function isScenarioChatConfigured() {
   // On Vercel, AI Gateway auth is injected at runtime via OIDC — not always
   // present in process.env during our preflight check.

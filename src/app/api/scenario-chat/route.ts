@@ -6,6 +6,9 @@ import {
 } from "ai";
 import {
   buildScenarioChatSystemPrompt,
+  getScenarioChatErrorMessage,
+  getScenarioChatModels,
+  isGatewayModelRestrictedError,
   isScenarioChatConfigured,
 } from "@/lib/scenario-chat";
 import {
@@ -39,6 +42,33 @@ function corsHeaders(origin: string | null): Record<string, string> {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   };
+}
+
+async function createScenarioChatStream(
+  problemId: SalesProblemOptionId,
+  employeeId: AiEmployeeId,
+  messages: UIMessage[],
+) {
+  const system = buildScenarioChatSystemPrompt(problemId, employeeId);
+  const modelMessages = await convertToModelMessages(messages);
+  const models = getScenarioChatModels();
+  let lastError: unknown;
+
+  for (const modelId of models) {
+    try {
+      return streamText({
+        model: gateway(modelId),
+        system,
+        messages: modelMessages,
+      });
+    } catch (error) {
+      lastError = error;
+      if (!isGatewayModelRestrictedError(error)) throw error;
+      console.warn(`scenario-chat model blocked: ${modelId}`);
+    }
+  }
+
+  throw lastError ?? new Error("No scenario chat models available.");
 }
 
 export async function OPTIONS(request: Request) {
@@ -83,20 +113,27 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = streamText({
-      model: gateway("openai/gpt-5.4"),
-      system: buildScenarioChatSystemPrompt(problemId, employeeId),
-      messages: await convertToModelMessages(messages),
-    });
+    const result = await createScenarioChatStream(
+      problemId,
+      employeeId,
+      messages,
+    );
 
     return result.toUIMessageStreamResponse({
       headers: corsHeaders(origin),
+      onError: (error) => {
+        console.error("scenario-chat stream failed", error);
+        return getScenarioChatErrorMessage(error);
+      },
     });
   } catch (error) {
     console.error("scenario-chat failed", error);
     return Response.json(
-      { error: "Unable to process your question right now." },
-      { status: 500, headers: corsHeaders(origin) },
+      { error: getScenarioChatErrorMessage(error) },
+      {
+        status: isGatewayModelRestrictedError(error) ? 402 : 500,
+        headers: corsHeaders(origin),
+      },
     );
   }
 }

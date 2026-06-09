@@ -128,7 +128,11 @@ export function ScenarioFollowUpChat({
 
       {error ? (
         <p className="mt-3 text-sm text-amber-200/90">
-          Unable to send that question right now. Try again in a moment.
+          {error.message.includes("AI Gateway") ||
+          error.message.includes("paid credits") ||
+          error.message.includes("gemini-2.0-flash")
+            ? error.message
+            : "Unable to send that question right now. Try again in a moment."}
         </p>
       ) : null}
 
