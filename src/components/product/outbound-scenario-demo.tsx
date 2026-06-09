@@ -4,7 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, Play, Radio, UserCheck, Zap } from "lucide-react";
 import { Container, Section, SectionHeading } from "@/components/primitives";
-import { AiEmployeeRoster } from "@/components/product/ai-employee-roster";
+import {
+  AiEmployeeRoster,
+  type AiEmployeeRosterHandle,
+} from "@/components/product/ai-employee-roster";
 import { buttonVariants } from "@/components/ui/button";
 import {
   aiEmployeeProfiles,
@@ -12,7 +15,6 @@ import {
   resolveAiEmployeeProfile,
   resolveSalesProblemOption,
   salesProblemOptions,
-  scenarioDemoVoiceEnabled,
   scenarioPlaybooks,
   type AiEmployeeId,
   type SalesProblemOptionId,
@@ -31,11 +33,13 @@ function getPlaybackPhaseCount(dialogueLength: number) {
 
 export function OutboundScenarioDemo() {
   const defaultDefaults = applySalesProblemDefaults(defaultProblemId);
+  const rosterRef = React.useRef<AiEmployeeRosterHandle | null>(null);
   const [selectedEmployeeId, setSelectedEmployeeId] =
     React.useState<AiEmployeeId | null>(defaultDefaults.employeeId);
   const [selectedProblemId, setSelectedProblemId] =
     React.useState<SalesProblemOptionId>(defaultProblemId);
   const [playbackPhase, setPlaybackPhase] = React.useState(-1);
+  const [isAgentSpeaking, setIsAgentSpeaking] = React.useState(false);
   const timerRef = React.useRef<number | null>(null);
 
   const problem = resolveSalesProblemOption(selectedProblemId);
@@ -60,6 +64,7 @@ export function OutboundScenarioDemo() {
 
   function selectProblem(problemId: SalesProblemOptionId) {
     const defaults = applySalesProblemDefaults(problemId);
+    rosterRef.current?.stopIntro();
     resetPlayback();
     setSelectedProblemId(problemId);
     setSelectedEmployeeId(defaults.employeeId);
@@ -74,6 +79,7 @@ export function OutboundScenarioDemo() {
 
   function playScenario() {
     clearPlaybackTimer();
+    void rosterRef.current?.playSelectedIntro();
     setPlaybackPhase(0);
     timerRef.current = window.setInterval(() => {
       setPlaybackPhase((current) => {
@@ -87,7 +93,10 @@ export function OutboundScenarioDemo() {
     }, PLAYBACK_STEP_MS);
   }
 
-  React.useEffect(() => resetPlayback, [selectedProblemId, employee.id]);
+  React.useEffect(() => {
+    resetPlayback();
+    rosterRef.current?.stopIntro();
+  }, [selectedProblemId, employee.id]);
 
   React.useEffect(() => () => clearPlaybackTimer(), []);
 
@@ -100,6 +109,12 @@ export function OutboundScenarioDemo() {
       ? Math.min(2, playbackPhase - 1 - playbook.dialogue.length)
       : -1;
   const showHandoff = playbackPhase >= phaseCount - 1 && playbackPhase >= 0;
+
+  const agentStatus = isAgentSpeaking
+    ? "Speaking now"
+    : isPlaying
+      ? "Running scenario"
+      : "Ready to run scenario";
 
   return (
     <Section id="outbound-scenario-demo" tone="dark" className="overflow-hidden">
@@ -118,9 +133,10 @@ export function OutboundScenarioDemo() {
 
         <div className="mx-auto mt-10 max-w-5xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-float sm:p-8">
           <AiEmployeeRoster
+            ref={rosterRef}
             selectedEmployeeId={selectedEmployeeId}
             onSelectEmployee={selectEmployee}
-            isScenarioPlaying={isPlaying}
+            onAgentSpeakingChange={setIsAgentSpeaking}
           />
 
           <div className="mt-8 rounded-xl border border-blue/25 bg-blue/10 p-4">
@@ -156,21 +172,16 @@ export function OutboundScenarioDemo() {
                 <img
                   src={employee.portraitSrc}
                   alt={employee.name}
-                  className="size-12 rounded-full border border-white/15 object-cover object-center"
+                  className="size-12 shrink-0 rounded-full border border-white/15 object-cover"
+                  style={{ objectPosition: employee.portraitFocus }}
                 />
                 <div>
                   <p className="text-sm font-semibold text-white">{employee.name}</p>
-                  <p className="text-xs text-blue-300">
-                    {isPlaying
-                      ? scenarioDemoVoiceEnabled
-                        ? "Speaking now"
-                        : "Running scenario"
-                      : "Ready to run scenario"}
-                  </p>
+                  <p className="text-xs text-blue-300">{agentStatus}</p>
                 </div>
-                {isPlaying ? (
+                {isPlaying || isAgentSpeaking ? (
                   <span className="ml-auto rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-medium text-emerald-200">
-                    Live next move
+                    {isAgentSpeaking ? "Agent live" : "Live next move"}
                   </span>
                 ) : null}
               </div>
@@ -215,7 +226,8 @@ export function OutboundScenarioDemo() {
                     ))}
                     {visibleDialogueCount === 0 ? (
                       <p className="text-sm text-white/40">
-                        Press Play scenario to watch how {employee.name} handles this conversation.
+                        Select an agent to hear their intro, then press Play scenario to watch
+                        the full walkthrough.
                       </p>
                     ) : null}
                   </div>

@@ -1,17 +1,3 @@
-/** Flip on when per-scenario voice audio is wired; until then demos use intro video + text. */
-export const scenarioDemoVoiceEnabled = false;
-
-export function shouldShowAgentIntroVideo(
-  employeeId: AiEmployeeId,
-  selectedEmployeeId: AiEmployeeId | null,
-  isScenarioPlaying: boolean,
-): boolean {
-  if (selectedEmployeeId !== employeeId) return false;
-  const isSpeakingWithVoice =
-    scenarioDemoVoiceEnabled && isScenarioPlaying;
-  return !isSpeakingWithVoice;
-}
-
 export type SalesDemoProfileId =
   | "inbound_qualifier"
   | "outbound_reactivation"
@@ -150,6 +136,7 @@ export type AiEmployeeProfile = {
   defaultProblemToSolve: string;
   defaultInterestContext: string;
   portraitSrc: string;
+  portraitFocus: string;
   motionSrc: string;
   readoutTitle: string;
   readoutLines: string[];
@@ -169,6 +156,7 @@ export const aiEmployeeProfiles: AiEmployeeProfile[] = [
     defaultInterestContext:
       "New sales lead requesting pricing, availability, and next appointment steps",
     portraitSrc: "/ai-employees/maya.png",
+    portraitFocus: "50% 14%",
     motionSrc: "/ai-employees/videos/maya.mp4",
     readoutTitle: "Sales lead opening",
     readoutLines: [
@@ -190,6 +178,7 @@ export const aiEmployeeProfiles: AiEmployeeProfile[] = [
     defaultInterestContext:
       "Customer missed or softened an appointment and needs a helpful next step",
     portraitSrc: "/ai-employees/avery.png",
+    portraitFocus: "50% 16%",
     motionSrc: "/ai-employees/videos/avery.mp4",
     readoutTitle: "Appointment rescue",
     readoutLines: [
@@ -211,6 +200,7 @@ export const aiEmployeeProfiles: AiEmployeeProfile[] = [
     defaultInterestContext:
       "Buyer has payment, credit, trade, or approval questions before the next handoff",
     portraitSrc: "/ai-employees/eric.png",
+    portraitFocus: "50% 18%",
     motionSrc: "/ai-employees/videos/eric.mp4",
     readoutTitle: "Finance handoff",
     readoutLines: [
