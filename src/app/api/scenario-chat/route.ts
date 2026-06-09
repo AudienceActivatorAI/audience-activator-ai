@@ -44,33 +44,6 @@ function corsHeaders(origin: string | null): Record<string, string> {
   };
 }
 
-async function createScenarioChatStream(
-  problemId: SalesProblemOptionId,
-  employeeId: AiEmployeeId,
-  messages: UIMessage[],
-) {
-  const system = buildScenarioChatSystemPrompt(problemId, employeeId);
-  const modelMessages = await convertToModelMessages(messages);
-  const models = getScenarioChatModels();
-  let lastError: unknown;
-
-  for (const modelId of models) {
-    try {
-      return streamText({
-        model: gateway(modelId),
-        system,
-        messages: modelMessages,
-      });
-    } catch (error) {
-      lastError = error;
-      if (!isGatewayModelRestrictedError(error)) throw error;
-      console.warn(`scenario-chat model blocked: ${modelId}`);
-    }
-  }
-
-  throw lastError ?? new Error("No scenario chat models available.");
-}
-
 export async function OPTIONS(request: Request) {
   return new Response(null, {
     status: 204,
@@ -113,11 +86,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await createScenarioChatStream(
-      problemId,
-      employeeId,
-      messages,
-    );
+    const modelIds = getScenarioChatModels();
+    const [primaryModel, ...fallbackModels] = modelIds;
+
+    const result = streamText({
+      model: gateway(primaryModel),
+      system: buildScenarioChatSystemPrompt(problemId, employeeId),
+      messages: await convertToModelMessages(messages),
+      providerOptions:
+        fallbackModels.length > 0
+          ? {
+              gateway: {
+                models: fallbackModels,
+              },
+            }
+          : undefined,
+    });
 
     return result.toUIMessageStreamResponse({
       headers: corsHeaders(origin),

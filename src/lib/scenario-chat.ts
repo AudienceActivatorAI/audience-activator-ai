@@ -7,13 +7,13 @@ import {
   type SalesProblemOptionId,
 } from "@/lib/live-callback-model";
 
-/** Override in Vercel env if a model is blocked on your AI Gateway tier. */
-export const DEFAULT_SCENARIO_CHAT_MODEL = "google/gemini-2.0-flash";
+/** Override in Vercel env if needed. Slugs must match AI Gateway model list. */
+export const DEFAULT_SCENARIO_CHAT_MODEL = "openai/gpt-4.1-mini";
 
 const SCENARIO_CHAT_MODEL_FALLBACKS = [
-  "google/gemini-2.0-flash",
-  "openai/gpt-4o-mini",
-  "anthropic/claude-3.5-haiku",
+  "openai/gpt-4.1-mini",
+  "google/gemini-2.5-flash-lite",
+  "anthropic/claude-haiku-4.5",
 ] as const;
 
 export function getScenarioChatModels() {
@@ -24,8 +24,12 @@ export function getScenarioChatModels() {
   return [...new Set(models)];
 }
 
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error);
+}
+
 export function isGatewayModelRestrictedError(error: unknown) {
-  const message = error instanceof Error ? error.message : String(error);
+  const message = getErrorMessage(error);
   return (
     message.includes("RestrictedModelsError") ||
     message.includes("Free tier users do not have access") ||
@@ -33,9 +37,21 @@ export function isGatewayModelRestrictedError(error: unknown) {
   );
 }
 
+export function isGatewayModelNotFoundError(error: unknown) {
+  const message = getErrorMessage(error);
+  return (
+    message.includes("GatewayModelNotFoundError") ||
+    message.includes("model_not_found") ||
+    message.includes("not found")
+  );
+}
+
 export function getScenarioChatErrorMessage(error: unknown) {
+  if (isGatewayModelNotFoundError(error)) {
+    return "Scenario chat model is unavailable. Set SCENARIO_CHAT_MODEL to a current AI Gateway slug such as openai/gpt-4.1-mini.";
+  }
   if (isGatewayModelRestrictedError(error)) {
-    return "AI Gateway needs a free-tier model or paid credits. In Vercel, add AI credits or set SCENARIO_CHAT_MODEL to google/gemini-2.0-flash.";
+    return "AI Gateway free credits cannot access this model. Add paid AI credits in Vercel or set SCENARIO_CHAT_MODEL to openai/gpt-4.1-mini.";
   }
   return "Unable to process your question right now. Try again in a moment.";
 }
