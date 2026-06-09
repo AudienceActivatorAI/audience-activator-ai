@@ -8,6 +8,7 @@ import {
   AiEmployeeRoster,
   type AiEmployeeRosterHandle,
 } from "@/components/product/ai-employee-roster";
+import { ScenarioFollowUpChat } from "@/components/product/scenario-follow-up-chat";
 import { buttonVariants } from "@/components/ui/button";
 import {
   aiEmployeeProfiles,
@@ -128,7 +129,7 @@ export function OutboundScenarioDemo() {
           align="center"
           eyebrow="Outbound execution demo"
           title="See your AI BDC team handle a real sales scenario."
-          description="Pick the sales problem, select an agent, and follow the full flow — how BDC Copilot opens the conversation, qualifies the lead, and prepares a clean handoff. Interactive preview only."
+          description="Pick the sales problem, select an agent, and follow the full flow — then ask follow-up questions. The same chat experience can run on your dealership website. Interactive preview only."
         />
 
         <div className="mx-auto mt-10 max-w-5xl rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-float sm:p-8">
@@ -337,6 +338,13 @@ export function OutboundScenarioDemo() {
                   );
                 })}
               </div>
+
+              <ScenarioFollowUpChat
+                key={`${selectedProblemId}-${employee.id}`}
+                problemId={selectedProblemId}
+                employeeId={employee.id}
+                employeeName={employee.name}
+              />
 
               <div className="mt-auto flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row">
                 <Link
