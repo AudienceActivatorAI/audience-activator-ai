@@ -1,3 +1,18 @@
+/** Flip on when per-scenario voice audio is wired; until then demos use intro video + text. */
+export const scenarioDemoVoiceEnabled = false;
+
+export function shouldShowAgentIntroVideo(
+  employeeId: AiEmployeeId,
+  selectedEmployeeId: AiEmployeeId | null,
+  isScenarioPlaying: boolean,
+): boolean {
+  const isSpeakingWithVoice =
+    scenarioDemoVoiceEnabled &&
+    isScenarioPlaying &&
+    selectedEmployeeId === employeeId;
+  return !isSpeakingWithVoice;
+}
+
 export type SalesDemoProfileId =
   | "inbound_qualifier"
   | "outbound_reactivation"

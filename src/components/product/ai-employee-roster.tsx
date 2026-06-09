@@ -5,6 +5,7 @@ import { Sparkles } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
   aiEmployeeProfiles,
+  shouldShowAgentIntroVideo,
   type AiEmployeeId,
 } from "@/lib/live-callback-model";
 import { cn } from "@/lib/utils";
@@ -12,11 +13,13 @@ import { cn } from "@/lib/utils";
 type Props = {
   selectedEmployeeId: AiEmployeeId | null;
   onSelectEmployee: (employeeId: AiEmployeeId) => void;
+  isScenarioPlaying?: boolean;
 };
 
 export function AiEmployeeRoster({
   selectedEmployeeId,
   onSelectEmployee,
+  isScenarioPlaying = false,
 }: Props) {
   return (
     <section>
@@ -40,6 +43,11 @@ export function AiEmployeeRoster({
       <div className="mt-8 grid gap-4 md:grid-cols-3">
         {aiEmployeeProfiles.map((employee) => {
           const isSelected = selectedEmployeeId === employee.id;
+          const showIntroVideo = shouldShowAgentIntroVideo(
+            employee.id,
+            selectedEmployeeId,
+            isScenarioPlaying,
+          );
           return (
             <article
               key={employee.id}
@@ -51,13 +59,26 @@ export function AiEmployeeRoster({
               )}
             >
               <div className="relative aspect-[9/16] overflow-hidden bg-navy-950">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={employee.portraitSrc}
-                  alt={employee.name}
-                  className="h-full w-full object-cover object-top"
-                  loading="lazy"
-                />
+                {showIntroVideo ? (
+                  <video
+                    src={employee.motionSrc}
+                    className="h-full w-full object-contain object-top"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    aria-label={`${employee.name} intro`}
+                  />
+                ) : (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={employee.portraitSrc}
+                    alt={employee.name}
+                    className="h-full w-full object-cover object-top"
+                    loading="lazy"
+                  />
+                )}
                 <div className="absolute left-4 top-4 rounded-lg border border-white/15 bg-navy-950/85 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                   {isSelected ? "Watching" : "Agent"}
                 </div>

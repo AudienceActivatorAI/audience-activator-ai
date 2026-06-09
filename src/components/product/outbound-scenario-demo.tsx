@@ -12,6 +12,7 @@ import {
   resolveAiEmployeeProfile,
   resolveSalesProblemOption,
   salesProblemOptions,
+  scenarioDemoVoiceEnabled,
   scenarioPlaybooks,
   type AiEmployeeId,
   type SalesProblemOptionId,
@@ -119,6 +120,7 @@ export function OutboundScenarioDemo() {
           <AiEmployeeRoster
             selectedEmployeeId={selectedEmployeeId}
             onSelectEmployee={selectEmployee}
+            isScenarioPlaying={isPlaying}
           />
 
           <div className="mt-8 rounded-xl border border-blue/25 bg-blue/10 p-4">
@@ -159,7 +161,11 @@ export function OutboundScenarioDemo() {
                 <div>
                   <p className="text-sm font-semibold text-white">{employee.name}</p>
                   <p className="text-xs text-blue-300">
-                    {isPlaying ? "Speaking now" : "Ready to run scenario"}
+                    {isPlaying
+                      ? scenarioDemoVoiceEnabled
+                        ? "Speaking now"
+                        : "Running scenario"
+                      : "Ready to run scenario"}
                   </p>
                 </div>
                 {isPlaying ? (
@@ -209,7 +215,7 @@ export function OutboundScenarioDemo() {
                     ))}
                     {visibleDialogueCount === 0 ? (
                       <p className="text-sm text-white/40">
-                        Press Play scenario to hear how {employee.name} opens this conversation.
+                        Press Play scenario to watch how {employee.name} handles this conversation.
                       </p>
                     ) : null}
                   </div>
