@@ -6,10 +6,9 @@ export function shouldShowAgentIntroVideo(
   selectedEmployeeId: AiEmployeeId | null,
   isScenarioPlaying: boolean,
 ): boolean {
+  if (selectedEmployeeId !== employeeId) return false;
   const isSpeakingWithVoice =
-    scenarioDemoVoiceEnabled &&
-    isScenarioPlaying &&
-    selectedEmployeeId === employeeId;
+    scenarioDemoVoiceEnabled && isScenarioPlaying;
   return !isSpeakingWithVoice;
 }
 

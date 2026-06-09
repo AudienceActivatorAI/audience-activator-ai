@@ -62,7 +62,7 @@ export function AiEmployeeRoster({
                 {showIntroVideo ? (
                   <video
                     src={employee.motionSrc}
-                    className="h-full w-full object-contain object-top"
+                    className="h-full w-full object-contain object-center"
                     autoPlay
                     loop
                     muted
@@ -75,12 +75,12 @@ export function AiEmployeeRoster({
                   <img
                     src={employee.portraitSrc}
                     alt={employee.name}
-                    className="h-full w-full object-cover object-top"
+                    className="h-full w-full object-cover object-center"
                     loading="lazy"
                   />
                 )}
                 <div className="absolute left-4 top-4 rounded-lg border border-white/15 bg-navy-950/85 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                  {isSelected ? "Watching" : "Agent"}
+                  {isSelected ? "Selected" : "Agent"}
                 </div>
               </div>
 
@@ -104,7 +104,7 @@ export function AiEmployeeRoster({
                   )}
                   aria-pressed={isSelected}
                 >
-                  {isSelected ? "Watching scenario" : "Watch scenario"}
+                  {isSelected ? "Selected" : "Select agent"}
                 </button>
               </div>
             </article>

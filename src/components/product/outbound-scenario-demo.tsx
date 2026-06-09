@@ -156,7 +156,7 @@ export function OutboundScenarioDemo() {
                 <img
                   src={employee.portraitSrc}
                   alt={employee.name}
-                  className="size-12 rounded-full border border-white/15 object-cover object-top"
+                  className="size-12 rounded-full border border-white/15 object-cover object-center"
                 />
                 <div>
                   <p className="text-sm font-semibold text-white">{employee.name}</p>
