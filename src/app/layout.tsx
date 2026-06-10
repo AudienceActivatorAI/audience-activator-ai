@@ -9,14 +9,14 @@ const interTight = Inter_Tight({
   variable: "--font-inter-tight",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
 });
 
 const mono = JetBrains_Mono({
   variable: "--font-mono-stack",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500"],
+  weight: ["500"],
 });
 
 export const metadata: Metadata = {

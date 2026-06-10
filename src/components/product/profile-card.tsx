@@ -56,10 +56,7 @@ export function ProfileCard({
           </div>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-blue/8 px-2.5 py-1 font-mono text-[0.62rem] tracking-wide text-blue-600 uppercase">
-          <span className="relative flex size-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue/60" />
-            <span className="relative inline-flex size-1.5 rounded-full bg-blue" />
-          </span>
+          <span className="inline-flex size-1.5 rounded-full bg-blue" aria-hidden />
           Live
         </span>
       </div>
