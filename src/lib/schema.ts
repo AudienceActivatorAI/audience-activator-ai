@@ -1,8 +1,31 @@
 import type { FaqItem } from "@/lib/faqs";
 import { products } from "@/lib/products";
+import { JUNE_LICENSE_PRICE_USD } from "@/lib/sales-sheet";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, PARENT_ORG_NAME, PARENT_ORG_URL } from "@/lib/site";
 
 type JsonLd = Record<string, unknown>;
+
+const DEFAULT_PRODUCT_IMAGE = `${SITE_URL}/icon.png`;
+
+const productImages: Partial<Record<string, string>> = {
+  "bdc-copilot": `${SITE_URL}/ai-employees/maya.png`,
+  dealeros: `${SITE_URL}/icon.png`,
+};
+
+function productImageFor(slug?: string) {
+  return (slug && productImages[slug]) || DEFAULT_PRODUCT_IMAGE;
+}
+
+function licenseOfferSchema(pageUrl: string): JsonLd {
+  return {
+    "@type": "Offer",
+    url: pageUrl,
+    priceCurrency: "USD",
+    price: JUNE_LICENSE_PRICE_USD.toFixed(2),
+    availability: "https://schema.org/InStock",
+    itemCondition: "https://schema.org/NewCondition",
+  };
+}
 
 export function organizationSchema(): JsonLd {
   return {
@@ -41,13 +64,15 @@ export function websiteSchema(): JsonLd {
 export function softwareApplicationSchema(): JsonLd {
   return {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": ["SoftwareApplication", "Product"],
     "@id": `${SITE_URL}/#software`,
     name: SITE_NAME,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     url: SITE_URL,
+    image: DEFAULT_PRODUCT_IMAGE,
     description: SITE_DESCRIPTION,
+    offers: licenseOfferSchema(SITE_URL),
     provider: { "@id": `${SITE_URL}/#organization` },
     featureList: [
       "Shopper identity resolution",
@@ -69,13 +94,15 @@ export function productSchema(input: {
   const url = `${SITE_URL}/products/${input.slug}`;
   return {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": ["SoftwareApplication", "Product"],
     "@id": `${url}#product`,
     name: input.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     url,
+    image: productImageFor(input.slug),
     description: input.description,
+    offers: licenseOfferSchema(url),
     isPartOf: { "@id": `${SITE_URL}/#software` },
     provider: { "@id": `${SITE_URL}/#organization` },
   };

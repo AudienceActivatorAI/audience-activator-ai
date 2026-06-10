@@ -1,6 +1,10 @@
 export const SALES_ASSISTANT_URL = "https://salesassistant.tredfi.com/";
 export const SALES_CONTACT_EMAIL = "james@tredfi.com";
 
+/** June independent-dealer license (USD) — used in sales copy and structured data. */
+export const JUNE_LICENSE_PRICE_USD = 2495;
+export const STANDARD_LICENSE_PRICE_USD = 4995;
+
 export const proofPoints = [
   { label: "June offer", value: "$2,495", note: "One-time software license" },
   { label: "Normal price", value: "$4,995", note: "Standard one-time license" },
