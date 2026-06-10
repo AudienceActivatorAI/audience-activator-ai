@@ -1,11 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-  animate,
-  useInView,
-  useReducedMotion,
-} from "motion/react";
 
 type StatCounterProps = {
   value: number;
@@ -15,6 +10,10 @@ type StatCounterProps = {
   className?: string;
 };
 
+function easeOutExpo(t: number) {
+  return t >= 1 ? 1 : 1 - 2 ** (-10 * t);
+}
+
 export function StatCounter({
   value,
   prefix = "",
@@ -23,8 +22,8 @@ export function StatCounter({
   className,
 }: StatCounterProps) {
   const ref = React.useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  const reduce = useReducedMotion();
+  const [displayValue, setDisplayValue] = React.useState(0);
+  const hasAnimatedRef = React.useRef(false);
 
   React.useEffect(() => {
     const node = ref.current;
@@ -36,25 +35,45 @@ export function StatCounter({
         maximumFractionDigits: decimals,
       })}${suffix}`;
 
-    if (reduce || !inView) {
-      node.textContent = format(inView ? value : 0);
-      if (!inView) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setDisplayValue(value);
       return;
     }
 
-    const controls = animate(0, value, {
-      duration: 1.4,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (latest) => {
-        node.textContent = format(latest);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || hasAnimatedRef.current) return;
+        hasAnimatedRef.current = true;
+
+        const duration = 1400;
+        const start = performance.now();
+
+        const tick = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const next = value * easeOutExpo(progress);
+          setDisplayValue(next);
+          node.textContent = format(next);
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
       },
-    });
-    return () => controls.stop();
-  }, [inView, value, prefix, suffix, decimals, reduce]);
+      { rootMargin: "-60px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [value, prefix, suffix, decimals]);
+
+  const formatted = `${prefix}${displayValue.toLocaleString("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })}${suffix}`;
 
   return (
     <span ref={ref} className={className}>
-      {prefix}0{suffix}
+      {formatted}
     </span>
   );
 }

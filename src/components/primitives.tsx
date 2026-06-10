@@ -28,7 +28,7 @@ export function Section({
     <section
       data-tone={tone}
       className={cn(
-        "relative scroll-mt-24 py-20 sm:py-28 lg:py-32",
+        "relative scroll-mt-24 py-20 sm:py-28 lg:py-32 [content-visibility:auto] [contain-intrinsic-size:auto_900px]",
         tone === "mist" && "bg-mist",
         tone === "dark" && "bg-navy-900 text-white",
         className,
